@@ -1,0 +1,29 @@
+{
+  "name": "treasury",
+  "version": "0.8.0",
+  "description": "Tool to read and write feature-sets in form of *.json or *.csv.",
+  "main": "index.js",
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mvrahden/treasury.git"
+  },
+  "keywords": [
+    "read",
+    "write",
+    "json",
+    "csv"
+  ],
+  "author": "Menno van Rahden",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/mvrahden/treasury/issues"
+  },
+  "homepage": "https://github.com/mvrahden/treasury#readme",
+  "devDependencies": {
+    "jasmine": "^2.6.0"
+  },
+  "dependencies": {}
+}
