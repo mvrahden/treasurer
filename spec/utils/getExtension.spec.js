@@ -1,4 +1,4 @@
-let getExtension = require("./getExtension");
+let getExtension = require("../../src/utils/getExtension");
 
 describe("The Extension-Getter determines the Extension through a path-String.", function() {
 

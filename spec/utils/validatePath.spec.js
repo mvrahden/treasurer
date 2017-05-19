@@ -1,4 +1,4 @@
-let isValid = require("./validatePath");
+let isValid = require("../../src/utils/validatePath");
 
 describe("The validation of path expects a valid path-String.", function() {
   let falsePath = [

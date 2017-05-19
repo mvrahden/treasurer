@@ -1,4 +1,4 @@
-let isValid = require("./validateData");
+let isValid = require("../../src/utils/validateData");
 
 describe("The validation of data expects a 2D-Array of Strings or Numbers.", function() {
   let falseData = [

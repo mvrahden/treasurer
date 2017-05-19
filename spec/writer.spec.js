@@ -1,6 +1,7 @@
-let writer = require('./writer');
 let fs = require('fs');
-let exec = require('child_process').exec;
+let execSync = require('child_process').execSync;
+
+let writer = require('../src/writer');
 
 describe('Writer', function() {
 
@@ -29,7 +30,7 @@ describe('Writer', function() {
         writer
         .setHeader(content.header)
         .setData(content.data)
-        .setPath(path);
+        .writeTo(path)
       }).not.toThrow();
     });
   });
@@ -38,35 +39,14 @@ describe('Writer', function() {
     paths.forEach((path) => {
       expect(() => {
         writer
-        .setHeader(content.header)
-        .setPath(path)
-        .setData(content.data);
-      }).toThrow();
-      expect(() => {
-        writer
         .setData(content.data)
         .setHeader(content.header)
-        .setPath(path);
-      }).toThrow();
-      expect(() => {
-        writer
-        .setData(content.data)
-        .setPath(path)
-        .setHeader(content.header);
-      }).toThrow();
-      expect(() => {
-        writer
-        .setPath(path)
-        .setData(content.data)
-        .setHeader(content.header);
-      }).toThrow();
-      expect(() => {
-        writer
-        .setPath(path)
-        .setHeader(content.header)
-        .setData(content.data);
       }).toThrow();
     });
+  });
+
+  afterAll(() => {
+    execSync('rm -rf ./test/');
   });
 
 });
