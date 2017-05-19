@@ -1,6 +1,6 @@
 > A lightweight* tool to read and write *feature-sets* (2D data) as *.json, *.csv or txt.
 
-[![Build](https://travis-ci.com/mvrahden/treasury.svg)](https://travis-ci.com/mvrahden/treasury)
+[![Build Status](https://travis-ci.com/mvrahden/treasury.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasury)
 [![codecov.io](https://codecov.io/github/mvrahden/treasury/coverage.svg?branch=master)](https://codecov.io/github/mvrahden/treasury?branch=master)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
