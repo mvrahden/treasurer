@@ -10,6 +10,7 @@
 - testing travis integration
 
 ## v0.9
+- adding codecoverage
 - adding test suite for "reader"
 - real sample data testing
 - refactoring/ cleaning code

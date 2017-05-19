@@ -2,7 +2,14 @@ sudo: false
 language: node_js
 node_js:
   - stable
+  - 6
+  - 4
 script: 
   - npm test
+matrix:
+  fast_finish: true
+os:
+  - linux
+  - osx
 after_success:
   - npm run report-coverage
