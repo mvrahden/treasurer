@@ -42,7 +42,7 @@ Treasury.
 > Each method throws a String containing a message in case of false usage.
 
 ## Read
-### Method: `readFrom(path: String): Object`
+#### Method: `readFrom(path: String): Object`
 - `path`: String containing the path to the file; e.g.:
   - relative Posix Path: `path/to/file.json`
   - absolute Posix Path: `/path/to/file.csv`
@@ -54,13 +54,13 @@ Treasury.
 - throws a message if input doesn't meet the accepted scope
 
 ## Write
-### Method: `setHeader(header[]: Array<String>): Function`
+#### Method: `setHeader(header[]: Array<String>): Function`
 - `header`: 1D-Array of Column Names
   - Valid data types: Strings and Numbers
 - returns `setData: Function`
 - throws a message if input doesn't meet the accepted scope
 
-### Method: `setData(data[][]: Array): Function`
+#### Method: `setData(data[][]: Array): Function`
 - `data`: 2D-Array of mixed values
   - each row represents one data set
   - Valid data types:
@@ -72,7 +72,7 @@ Treasury.
 - throws a message if
   - input doesn't meet the accepted scope, e.g. nested structures like `Objects`, `Arrays`
 
-### Method: `writeTo(path: String): void`
+#### Method: `writeTo(path: String): void`
 - `path`: String containing the path to the output-file; e.g.:
   - relative Posix Path: `path/to/file.json`
   - absolute Posix Path: `/path/to/file.csv`
