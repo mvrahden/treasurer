@@ -1,8 +1,6 @@
-> A dependency-free tool to read and write *feature-sets* (2D data) as *.json, *.csv or *.txt.
+# Treasury [![Build Status](https://travis-ci.com/mvrahden/treasury.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasury) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
-[![Build Status](https://travis-ci.com/mvrahden/treasury.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasury)
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
-<!--[![codecov.io](https://codecov.io/github/mvrahden/treasury/coverage.svg?branch=master)](https://codecov.io/github/mvrahden/treasury?branch=master)-->
+> A dependency-free tool to read and write *feature-sets* (2D data) as *.json, *.csv or *.txt.
 
 # Install
 Install it using the following command:
