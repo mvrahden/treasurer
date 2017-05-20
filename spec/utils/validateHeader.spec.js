@@ -1,7 +1,7 @@
-let isValid = require("../../src/utils/validateHeader");
+const isValid = require("../../src/utils/validateHeader");
 
-describe("The validation of headers expects a 1D-Array of Strings or Numbers.", function() {
-  let falseHeaders = [
+describe("The validation of headers expects a 1D-Array of Strings or Numbers.", () => {
+  const falseHeaders = [
     undefined,
     null,
     "falseValue",
@@ -12,18 +12,18 @@ describe("The validation of headers expects a 1D-Array of Strings or Numbers.", 
     ["validValue", []],
     ["validValue", {}]];
 
-  let validHeaders = [
+  const validHeaders = [
     ["validValue", "validValue"],
     ["validValue", 1.555]
   ];
 
-  it("Does not accept undefined, null or empty or deep/nested structures.", function() {
+  it("Does not accept undefined, null or empty or deep/nested structures.", () => {
     falseHeaders.forEach((falseHeader) => {
       expect(isValid(falseHeader)).toBe(false);
     })
   });
 
-  it("Does accept Strings and Numbers", function() {
+  it("Does accept Strings and Numbers", () => {
     validHeaders.forEach((validHeader) => {
       expect(isValid(validHeader)).toBe(true);
     })

@@ -1,75 +1,98 @@
-let fs = require('fs');
-let path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-let isValidPath = require('./utils/validatePath');
+const isValidPath = require('./utils/validatePath');
 
 let config = {
   file: {},
   content: {}
 }
 
-let readFrom = function(filePath) {
+/**
+ * Reads the content of the given file path.
+ * @param {String} filePath - String representation of a file path.
+ * @returns {Object} dataSet-Object containing the header and the corresponding data.
+ */
+const readFrom = function(filePath) {
   if(!isValidPath(filePath)) throw "json-path: Please provide a valid path.";
-  filePath = path.normalize(filePath);
-  config.file = path.parse(filePath);
-  return read();
+  preparePathConfig(filePath);
+  try {
+    return read();
+  } catch(err) {
+    if(/ENOENT/.test(err)) throw "readFrom: No such file or directory. (ENOENT)"
+    if(/EACCES/.test(err)) throw "writeTo: Permission denied. (EACCES)"
+    if(/ECANCELED/.test(err)) throw "writeTo: Operation canceled. (ECANCELED)"
+    throw err;
+  }
 };
 
-  let read = function() {
-    let filePath = config.file.dir + path.sep + config.file.base;
-    let rawData = fs.readFileSync(filePath).toString();
-    let data = convertData(rawData, config.file.ext);
+  const preparePathConfig = function(filePath) {
+    filePath = path.normalize(filePath);
+    config.file = path.parse(filePath);
+  }
+
+  const read = function() {
+    const filePath = config.file.dir + path.sep + config.file.base;
+    const rawData = fs.readFileSync(filePath).toString();
+    const data = convertData(rawData, config.file.ext);
     return data;
   }
 
-    let convertData = function(data, ext) {
+    const convertData = function(data, ext) {
       if(ext === '.csv') return convertFromCSV(data);
       else if(ext === '.txt') return convertFromTXT(data);
       else return JSON.parse(data);
     }
 
-      let convertFromCSV = function(data) {
+      const convertFromCSV = function(data) {
         config.content.header = getHeaderFromCSV(data);
         config.content.data = getDataFromCSV(data);
         return config.content;
       }
-        let getHeaderFromCSV = function(data) {
-          return data.split('\n')[0].split(',');
+
+        const getHeaderFromCSV = function(data) {
+          return data.split('\n')[0].split(',').map(mapEachValue);
         }
-        let getDataFromCSV = function(data) {
-          let rows = data.split('\n');
-          let result = [];
+
+        const getDataFromCSV = function(data) {
+          const rows = data.split('\n');
+          let csvData = [];
 
           for(let i=1; i<rows.length; i++) {
             if(rows[i].length > 0) {
-              let row = rows[i].split(',').map((value) => {
-                if(value === "undefined") return undefined;
-                if(value === "null") return null;
-                if(value === "true") return true;
-                if(value === "false") return false;
-                if(!Number.isNaN(Number(value))) return Number(value);
-                return value;
-              });
-              result.push(row);
+              const row = rows[i].split(',').map(mapEachValue);
+              csvData.push(row);
             }
           }
-
-          return result;
+          return csvData;
         }
 
-      let convertFromTXT = function(data) {
+          const mapEachValue = function(value) {
+            if(value === "undefined") return undefined;
+            if(value === "null") return null;
+            if(value === "true") return true;
+            if(value === "false") return false;
+            if(value === "NaN") return Number.NaN;
+            if(value === "") return '';
+            if(!Number.isNaN(Number(value))) return Number(value);
+            return value;
+          }
+
+      const convertFromTXT = function(data) {
         config.content.header = getHeaderFromCSV(data);
         config.content.data = getDataFromCSV(data);
         return config.content;
       }
-        let getHeaderFromTXT = function(data) {
+
+        const getHeaderFromTXT = function(data) {
           return getHeaderFromCSV(data);
         }
-        let getDataFromTXT = function(data) {
+      
+        const getDataFromTXT = function(data) {
           return getDataFromCSV(data);
         }
 
-let fileBuilder = {
+const fileBuilder = {
   readFrom: readFrom
 };
 

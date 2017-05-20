@@ -23,7 +23,8 @@
   },
   "homepage": "https://github.com/mvrahden/treasury#readme",
   "devDependencies": {
-    "jasmine": "^2.6.0"
+    "jasmine": "^2.6.0",
+    "lodash": "^4.17.4"
   },
   "dependencies": {}
 }

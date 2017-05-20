@@ -1,5 +1,10 @@
 let extensionMatcher = /\.(txt|csv|json)$/;
 
+/**
+ * Extracts the extension from a path-String.
+ * @param {*} path - String representation of a path.
+ * @returns {String} extension or 'invalid'.
+ */
 let getExtension = function(path) {
   let extensionMatches = extensionMatcher.exec(path);
   if(extensionMatches === null || extensionMatches.length === 0) 

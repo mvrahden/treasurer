@@ -1,35 +1,17 @@
-let getExtension = require("../../src/utils/getExtension");
+const getExtension = require("../../src/utils/getExtension");
 
-describe("The Extension-Getter determines the Extension through a path-String.", function() {
+const falseExtensions = require('./testingData/invalidExtensions');
+const validExtensions = require('./testingData/validExtensions');
 
-  let falseExtensions = [
-    "./path/toFile.xlsx",
-    "./path/toFile.xls",
-    "./path/toFile.docx",
-    "./path/toFile.doc",
-    "./path/toFile.js",
-    "./path/toFile.ts",
-    "./path/toFile.html",
-    "./path/toFile.xml"
-  ];
+describe("The Extension-Getter", () => {
 
-  let validExtensions = [
-    "./test.json",
-    "./utils/test.json",
-    "./utils/test.csv",
-    "./utils/test.csv.csv",
-    "./utils/test.json.csv",
-    "./utils/test.csv.json",
-    "./utils/test.csv.txt"
-  ];
-
-  it("Does not accept non-expected extensions.", function() {
+  it("does not accept non-expected extensions.", () => {
     falseExtensions.forEach((path) => {
       expect(getExtension(path)).toBe('invalid');
     });
   });
 
-  it("Does return the real valid extension.", function() {
+  it("does return the real valid extension.", () => {
       expect(getExtension(validExtensions[0])).toBe('json');
       expect(getExtension(validExtensions[1])).toBe('json');
       expect(getExtension(validExtensions[2])).toBe('csv');

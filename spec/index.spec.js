@@ -1,83 +1,135 @@
-let fs = require('fs');
-let execSync = require('child_process').execSync;
+const fs = require('fs');
+const execSync = require('child_process').execSync;
+const _ = require('lodash');
 
-let Treasury = require('../index');
+const Treasury = require('../index');
+const clean = require('../src/utils/cleanData');
 
-describe('Treasury', () => {
-  
-  let content = {
-    header: ['Col1','Col2','Col3','Col4'],
-    data: [
-      [11, '21', '31', '41'],
-      ['12', 22, '32', '42'],
-      ['13', '23', 33, '43'],
-      ['14', '24', '34', 44]
-    ]
-  };
+const validPaths = require('./testingData/validPaths');
+const invalidPaths = require('./testingData/invalidPaths');
+const validContents = require('./testingData/validFileContents');
+const invalidContents = require('./testingData/invalidFileContents');
 
-  let falsePaths = [
-    [],
-    null,
-    undefined,
-    1.5,
-    './test/subdir/subsubdir/test.xlsx',
-    './test/subdir/subsubdir/test',
-    './test/subdir/subsubdir/test.doc'
-  ];
+const cleanTestDirectory = function() {
+  execSync('rm -rf ./test/');
+};
 
-  let paths = [
-    './test/subdir/subsubdir/test.json',
-    './test/subdir/subsubdir/test.csv',
-    './test/subdir/subsubdir/test.txt',
-    'test/test.json',
-    'test/test.csv',
-    'test/test.txt'
-  ]
+const writeAllValid = function() {
+  validContents.forEach((content) => {
+    validPaths.forEach((path)=> {
+      Treasury
+        .setHeader(content.header)
+        .setData(content.data)
+        .writeTo(path);
+    });
+  });
+};
+
+describe('Treasury:', () => {
 
   describe('Writer', () => {
-    it('should throw an error if given a false path.', function() {
-      falsePaths.forEach((path)=> {
+    
+    beforeEach(() => {
+      cleanTestDirectory();
+    });
+
+    it('should throw an error if given a false path.', () => {
+      const someValidContent = validContents[0];
+      invalidPaths.forEach((path)=> {
         expect(() => {
           Treasury
-            .setHeader(content.header)
-            .setData(content.data)
+            .setHeader(someValidContent.header)
+            .setData(someValidContent.data)
             .writeTo(path);
         }).toThrow();
       });
     });
 
-    it('should create the file even in deeply nested, non-existing directories.', function() {
-      paths.forEach((path)=> {
-        expect(() => {
-          Treasury
-            .setHeader(content.header)
-            .setData(content.data)
-            .writeTo(path)
-        }).not.toThrowError();
-        expect(fs.existsSync(path)).toBe(true);
+    it('should throw an error for invalid files.', () => {
+      invalidContents.forEach((content) => {
+        validPaths.forEach((path)=> {
+          expect(() => {
+            Treasury
+              .setHeader(content.header)
+              .setData(content.data)
+              .writeTo(path)
+          }).toThrow();
+        });
       });
     });
+
+    it('should create the file even in deeply nested, non-existing directories.', () => {
+      validContents.forEach((content) => {
+        validPaths.forEach((path)=> {
+          expect(() => {
+            Treasury
+              .setHeader(content.header)
+              .setData(content.data)
+              .writeTo(path)
+          }).not.toThrowError();
+          expect(fs.existsSync(path)).toBe(true);
+        });
+      });
+    });
+
+    afterAll(() => {
+      cleanTestDirectory();
+    });
+
   });
 
   describe('Reader', () => {
-    it('should throw an error if given a false path.', function() {
-      falsePaths.forEach((path)=> {
+
+    beforeAll(() => {
+      writeAllValid();
+    })
+
+    it('should throw an error if given a false path.', () => {
+      invalidPaths.forEach((path)=> {
         expect(() => {
           Treasury.readFrom(path);
         }).toThrow();
       });
     });
 
-    it('should be able to read the files content.', function() {
-      paths.forEach((path)=> {
-        expect(fs.existsSync(path)).toBe(true);
-        expect(Treasury.readFrom(path)).toBeTruthy(content);
+    it('should be able to read the files content.', () => {
+      validContents.forEach((content) => {
+        validPaths.forEach((path)=> {
+          expect(fs.existsSync(path)).toBe(true);
+          expect(() => {
+            Treasury.readFrom(path);
+          }).not.toThrow();
+        });
       });
     });
+
+  });
+
+  describe('Treasury', () => {
+
+    beforeAll(() => {
+      writeAllValid();
+    });
+
+    xit('should be able to reconstruct the (cleaned) data that was written by reading the files, e.g. Numbers formatted as Strings.', () => {
+      validContents.forEach((content) => {
+        validPaths.forEach((path)=> {
+          expect(fs.existsSync(path)).toBe(true);
+          expect(function() {
+            const res = Treasury.readFrom(path);
+            content.data = clean(content.data);
+            // console.log(res);
+            // console.log(content);
+            return _.isEqual(res, content);
+          }()).toBe(true);
+        });
+      });
+    });
+
   });
 
   afterAll(() => {
-    execSync('rm -rf ./test/');
+    cleanTestDirectory();
   });
 
 });

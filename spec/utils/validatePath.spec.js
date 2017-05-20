@@ -1,47 +1,27 @@
-let isValid = require("../../src/utils/validatePath");
+const isValid = require('../../src/utils/validatePath');
 
-describe("The validation of path expects a valid path-String.", function() {
-  let falsePath = [
-    undefined,
-    null,
-    "falseValue",
-    1.5,
-    [],
-  ];
+const falsePaths = require('./testingData/invalidPaths');
+const falseExtensions = require('./testingData/invalidExtensions');
+const validExtensions = require('./testingData/validExtensions');
 
-  let falseExtensions = [
-    "./path/toFile.xlsx",
-    "./path/toFile.xls",
-    "./path/toFile.docx",
-    "./path/toFile.doc",
-    "./path/toFile.js",
-    "./path/toFile.ts",
-    "./path/toFile.html",
-    "./path/toFile.xml",
-    "./path/toFile.xml"
-  ];
+describe("Path validation", () => {
 
-  let validExtensions = [
-    "./test.json",
-    "./utils/test.json",
-    "./utils/test.csv"
-  ];
-
-  it("Does not accept non-String values.", function() {
-    falsePath.forEach((path) => {
+  it("does not accept non-String values.", () => {
+    falsePaths.forEach((path) => {
       expect(isValid(path)).toBe(false);
     });
   });
 
-  it("Does not accept path with false extensions.", function() {
+  it("does not accept path with false extensions.", () => {
     falseExtensions.forEach((path) => {
       expect(isValid(path)).toBe(false);
     });
   });
 
-  it("Does not accept path w/o extensions.", function() {
+  it("does accept path declared valid extensions.", () => {
     validExtensions.forEach((path) => {
       expect(isValid(path)).toBe(true);
     });
   });
+
 });
