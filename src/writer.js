@@ -13,12 +13,26 @@ let config = {
   content: {}
 }
 
+/**
+ * Captures the header.
+ * @param {any[]} header - 1D Array of Strings and/or Numbers.
+ * @returns {Function} setData.
+ * @throws Message if input doesn't meet the accepted scope.
+ */
 const setHeader = function(header) {
   if(!isValidHeader(header)) throw "json-header: Accepts only 1-d Arrays with valid Strings and Numbers.";
   config.content.header = header;
   return dataSetter;
 };
 
+/**
+ * Captures the data.
+ * Accepts Numbers (1, 1.234, NaN), Strings ('abc', ''), booleans (true, false) and undefined & null.
+ * Transforms undefined and null into empty Strings.
+ * @param {any[][]} data - 2D Array of mixed values.
+ * @returns {Function} writeTo.
+ * @throws Message if input doesn't meet the accepted scope.
+ */
 const setData = function(data) {
   if(!isValidDataStructure(data)) throw "setData: accepts only 2-d Arrays.";
   data = cleanData(data);
@@ -27,6 +41,11 @@ const setData = function(data) {
   return pathSetter;
 };
 
+/**
+ * Captures the file path and writes the given content to the file.
+ * @param {String} filePath - String representation of the file path.
+ * @throws Message if input doesn't meet the accepted scope or if the writing process was aborted.
+ */
 const writeTo = function(filePath) {
   if(!isValidPath(filePath)) throw "writeTo: Please provide a valid path.";
   filePath = path.normalize(filePath);

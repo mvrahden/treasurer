@@ -12,6 +12,7 @@ let config = {
  * Reads the content of the given file path.
  * @param {String} filePath - String representation of a file path.
  * @returns {Object} dataSet-Object containing the header and the corresponding data.
+ * @throws Message if input doesn't meet the accepted scope or if the writing process was aborted.
  */
 const readFrom = function(filePath) {
   if(!isValidPath(filePath)) throw "json-path: Please provide a valid path.";
