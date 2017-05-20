@@ -42,19 +42,25 @@ Treasury.
 > Each method throws a String containing a message in case of false usage.
 
 ## Read
-### Method: `readFrom(path: String): FeatureSet`
-- `path`: String containing the path to the output-file; e.g.:
-  - `path/to/file.json`
-  - `/path/to/file.csv`
-- sets the path and writes the data to the output-file
+### Method: `readFrom(path: String): Object`
+- `path`: String containing the path to the file; e.g.:
+  - relative Posix Path: `path/to/file.json`
+  - absolute Posix Path: `/path/to/file.csv`
+  - relative Windows Path: `path\\to\\file.json` (not yet tested)
+  - absolute Windows Path: `C:\\path\\to\\file.csv` (not yet tested)
+- returns an `Object` containing:
+  - `header`: 1D-Array of mixed values.
+  - `data`: 2D-Array of corresponding data mixed values.
+- throws a message if input doesn't meet the accepted scope
 
 ## Write
-### Method: `setHeader(header[]: Array<String>): DataSetter`
+### Method: `setHeader(header[]: Array<String>): Function`
 - `header`: 1D-Array of Column Names
   - Valid data types: Strings and Numbers
-- returns `DataSetter`
+- returns `setData: Function`
+- throws a message if input doesn't meet the accepted scope
 
-### Method: `setData(data[][]: Array): PathSetter`
+### Method: `setData(data[][]: Array): Function`
 - `data`: 2D-Array of mixed values
   - each row represents one data set
   - Valid data types:
@@ -62,8 +68,9 @@ Treasury.
     - Strings (`'abc'`, `''`) and
     - Numbers (`1`, `1.234`, `NaN`)
     - `undefined`, `null` are being translated to `''` (empty String)
-- returns `PathSetter` (represented by `writeTo`)
-- throws a message on: nested structures like `Objects`, `Arrays`
+- returns `writeTo: Function` (represented by `writeTo`)
+- throws a message if
+  - input doesn't meet the accepted scope, e.g. nested structures like `Objects`, `Arrays`
 
 ### Method: `writeTo(path: String): void`
 - `path`: String containing the path to the output-file; e.g.:
@@ -73,6 +80,9 @@ Treasury.
   - absolute Windows Path: `C:\\path\\to\\file.csv` (not yet tested)
 - sets the path and writes the data to the output-file
   - for the sake of usability, this methods violates the Single Responsibility Principle
+- throws a message if
+  - input doesn't meet the accepted scope or
+  - if the writing process was aborted.
 
 # Scope Definition
 This project is meant to be *lightweight*, *easy to use* and limited to the initial scope of:
