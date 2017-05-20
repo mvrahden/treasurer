@@ -3,10 +3,16 @@ const execSync = require('child_process').execSync;
 
 const reader = require('../src/reader');
 
+const invalidPaths = require('./testingData/invalidPaths');
+
 describe('Reader', () => {
 
-  // xit('', function() {
-
-  // });
+  it('should throw an error if given a false path.', () => {
+    invalidPaths.forEach((path)=> {
+      expect(() => {
+        Treasury.readFrom(path);
+      }).toThrow();
+    });
+  });
 
 });

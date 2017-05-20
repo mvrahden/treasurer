@@ -70,16 +70,26 @@ const writeTo = function(filePath) {
     const convertData = function(header, data, ext) {
       if(ext === '.csv') return convertToCSV(header, data);
       else if(ext === '.txt') return convertToTXT(header, data);
-      else return JSON.stringify({header: header, data: data});
+      else return JSON.stringify({header: header, data: data}, (key, value) => {
+        if(Number.isNaN(value)) return "NaN";
+        return value;
+      });
     }
 
       const convertToCSV = function(header, data) {
         let outputString = header.join(',') + '\n';
         data.forEach((row) => {
-          outputString += row.join(',') + '\n';
+          outputString += row.map(mapEscapeStringValues).join(',') + '\n';
         });
         return outputString;
       }
+
+        const mapEscapeStringValues = function(value) {
+          if(typeof value === 'string' || value instanceof String) {
+            return ('"'+value+'"');
+          }
+          return value;
+        }
 
       const convertToTXT = function(header, data) {
         return convertToCSV(header, data);

@@ -10,11 +10,13 @@
 - ~~testing travis integration~~~
 
 ## v0.9
-- adding test suite for "reader"?
-- Finish Treasury integration test (see: xit)
 - ~~more complex sample data for testing~~
 - ~~refactoring/ cleaning code~~
 - ~~documentation~~
+- ~~Finish Treasury integration test: Reconstruction of clean written structure via (de-)escaping values~~
+  - ~~(de-)escape Strings with delimiting quotes~~
+  - ~~JSON.stringify and JSON.parse (de-)escape `NaN`~~
+- ~~adding test suite for "reader"?~~
 
 ## v1.0a
 - first release candidate

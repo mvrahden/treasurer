@@ -42,7 +42,10 @@ const readFrom = function(filePath) {
     const convertData = function(data, ext) {
       if(ext === '.csv') return convertFromCSV(data);
       else if(ext === '.txt') return convertFromTXT(data);
-      else return JSON.parse(data);
+      else return JSON.parse(data, (key, value) => {
+        if(value === 'NaN') return Number.NaN;
+        return value;
+      });
     }
 
       const convertFromCSV = function(data) {
@@ -74,7 +77,7 @@ const readFrom = function(filePath) {
             if(value === "true") return true;
             if(value === "false") return false;
             if(value === "NaN") return Number.NaN;
-            if(value === "") return '';
+            if(/^"(.*(?="$))"$/.test(value)) return value.slice(1,-1);
             if(!Number.isNaN(Number(value))) return Number(value);
             return value;
           }

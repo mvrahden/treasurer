@@ -4,7 +4,9 @@ let execSync = require('child_process').execSync;
 const writer = require('../src/writer');
 
 const validPaths = require('./testingData/validPaths');
+const invalidPaths = require('./testingData/invalidPaths');
 const validContents = require('./testingData/validFileContents');
+const invalidContents = require('./testingData/invalidFileContents');
 
 const cleanTestDirectory = function() {
   execSync('rm -rf ./test/');
@@ -32,6 +34,31 @@ describe('Writer', () => {
         .setData(someValidContent.data)
         .writeTo(path);
       }).not.toThrow();
+    });
+  });
+
+  it('should throw an error if given a false path.', () => {
+    const someValidContent = validContents[0];
+    invalidPaths.forEach((path)=> {
+      expect(() => {
+        Treasury
+          .setHeader(someValidContent.header)
+          .setData(someValidContent.data)
+          .writeTo(path);
+      }).toThrow();
+    });
+  });
+
+  it('should throw an error if given invalid contents.', () => {
+    invalidContents.forEach((content) => {
+      validPaths.forEach((path)=> {
+        expect(() => {
+          Treasury
+            .setHeader(content.header)
+            .setData(content.data)
+            .writeTo(path)
+        }).toThrow();
+      });
     });
   });
 
