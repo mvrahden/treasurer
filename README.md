@@ -13,7 +13,7 @@ npm install treasury
 # Usage
 
 Read data from file and always get the data in the same strucute:
-```
+```javascript
 let Treasury = require('treasury');
 
 let content = Treasury.readFrom('./path/to/file.csv');
@@ -26,7 +26,7 @@ console.log(content.data);
 ```
 
 Write data to any given file:
-```
+```javascript
 let Treasury = require('treasury');
 
 //... prepare a header and data
