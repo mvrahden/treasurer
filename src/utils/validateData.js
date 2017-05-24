@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Validates the elements of the given 2D-Array dataSet.
  * Accepts elements of type Number (1, 1.234, NaN), String ('abc', '') and boolean (true, false).

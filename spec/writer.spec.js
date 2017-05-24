@@ -1,3 +1,4 @@
+'use strict';
 let fs = require('fs');
 let execSync = require('child_process').execSync;
 

@@ -1,3 +1,4 @@
+'use strict';
 const isValid = require("../../src/utils/validateData");
 
 const falseData = require('./testingData/invalidDataElements');

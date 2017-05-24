@@ -1,3 +1,4 @@
+'use strict';
 const fs = require('fs');
 const execSync = require('child_process').execSync;
 const _ = require('lodash');

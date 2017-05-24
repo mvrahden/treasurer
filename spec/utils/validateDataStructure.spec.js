@@ -1,3 +1,4 @@
+'use strict';
 const isValid = require("../../src/utils/validateDataStructure");
 
 const falseDataStructure = require('./testingData/invalidDataStructure');

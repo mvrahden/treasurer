@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Validates the elements of a 1D Array of mixed values.
  * Accepts only Strings and/or Numbers.

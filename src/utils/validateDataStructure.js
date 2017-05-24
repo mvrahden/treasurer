@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Validates the raw structure of the given dataSet.
  * Accepts a 2D Array with at least one row of any data.

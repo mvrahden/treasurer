@@ -1,3 +1,4 @@
+'use strict';
 /**
  * Cleans unwanted values (undefined, null) of a 2D Array.
  * @param {any[][]} dataSet - 2D Array of mixed values.

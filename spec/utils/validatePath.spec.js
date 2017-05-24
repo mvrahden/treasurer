@@ -1,3 +1,4 @@
+'use strict';
 const isValid = require('../../src/utils/validatePath');
 
 const falsePaths = require('./testingData/invalidPaths');

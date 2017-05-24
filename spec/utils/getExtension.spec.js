@@ -1,3 +1,4 @@
+'use strict';
 const getExtension = require("../../src/utils/getExtension");
 
 const falseExtensions = require('./testingData/invalidExtensions');

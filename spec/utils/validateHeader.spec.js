@@ -1,3 +1,4 @@
+'use strict';
 const isValid = require("../../src/utils/validateHeader");
 
 describe("The validation of headers expects a 1D-Array of Strings or Numbers.", () => {

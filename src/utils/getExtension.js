@@ -1,3 +1,4 @@
+'use strict';
 let extensionMatcher = /\.(txt|csv|json)$/;
 
 /**

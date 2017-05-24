@@ -1,3 +1,4 @@
+'use strict';
 let writer = require('./src/writer');
 let reader = require('./src/reader');
 
