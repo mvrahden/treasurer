@@ -2,7 +2,7 @@ const fs = require('fs');
 const execSync = require('child_process').execSync;
 const _ = require('lodash');
 
-const Treasury = require('../index');
+const Treasurer = require('../index');
 const clean = require('../src/utils/cleanData');
 
 const validPaths = require('./testingData/validPaths');
@@ -13,13 +13,13 @@ const cleanTestDirectory = function() {
 };
 
 const writeAnyValidData = function(content, path) {
-  Treasury
+  Treasurer
     .setHeader(content.header)
     .setData(content.data)
     .writeTo(path);
 };
 
-describe('Treasury:', () => {
+describe('Treasurer:', () => {
 
   describe('Writer', () => {
     
@@ -31,7 +31,7 @@ describe('Treasury:', () => {
       validContents.forEach((content) => {
         validPaths.forEach((path)=> {
           expect(() => {
-            Treasury
+            Treasurer
               .setHeader(content.header)
               .setData(content.data)
               .writeTo(path)
@@ -61,7 +61,7 @@ describe('Treasury:', () => {
         validPaths.forEach((path)=> {
           expect(fs.existsSync(path)).toBe(true);
           expect(() => {
-            Treasury.readFrom(path);
+            Treasurer.readFrom(path);
           }).not.toThrow();
         });
       });
@@ -69,7 +69,7 @@ describe('Treasury:', () => {
 
   });
 
-  describe('Treasury', () => {
+  describe('Treasurer', () => {
 
     it('should be able to reconstruct the (cleaned) data that was written by reading the files, e.g. Numbers formatted as Strings.', () => {
       validContents.forEach((content) => {
@@ -77,7 +77,7 @@ describe('Treasury:', () => {
           writeAnyValidData(content, path);
           expect(fs.existsSync(path)).toBe(true);
           expect(function() {
-            const res = Treasury.readFrom(path);
+            const res = Treasurer.readFrom(path);
             content.data = clean(content.data);
             return _.isEqual(res, content);
           }()).toBe(true);

@@ -10,7 +10,7 @@ describe('Reader', () => {
   it('should throw an error if given a false path.', () => {
     invalidPaths.forEach((path)=> {
       expect(() => {
-        Treasury.readFrom(path);
+        Treasurer.readFrom(path);
       }).toThrow();
     });
   });

@@ -41,7 +41,7 @@ describe('Writer', () => {
     const someValidContent = validContents[0];
     invalidPaths.forEach((path)=> {
       expect(() => {
-        Treasury
+        Treasurer
           .setHeader(someValidContent.header)
           .setData(someValidContent.data)
           .writeTo(path);
@@ -53,7 +53,7 @@ describe('Writer', () => {
     invalidContents.forEach((content) => {
       validPaths.forEach((path)=> {
         expect(() => {
-          Treasury
+          Treasurer
             .setHeader(content.header)
             .setData(content.data)
             .writeTo(path)

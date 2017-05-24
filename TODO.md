@@ -13,7 +13,7 @@
 - ~~more complex sample data for testing~~
 - ~~refactoring/ cleaning code~~
 - ~~documentation~~
-- ~~Finish Treasury integration test: Reconstruction of clean written structure via (de-)escaping values~~
+- ~~Finish Treasurer integration test: Reconstruction of clean written structure via (de-)escaping values~~
   - ~~(de-)escape Strings with delimiting quotes~~
   - ~~JSON.stringify and JSON.parse (de-)escape `NaN`~~
 - ~~adding test suite for "reader"?~~
@@ -23,8 +23,11 @@
 - Typescript Definition File
 
 ## future features
+- dynamic `Array<Object>` parsing
+  - [{id: 1, name: 'someName', key: 'someValue', ...},{id: 2, name: 'someOtherName', key: 'otherValue', ...},{id: 3, name: 'someOtherName', key: 'otherValue', ...}]
+  - to known format
 - dynamic transformation of data into the needed form
-  - Treasury here (Schema?) is my header located --> turn into valid header array
-  - Treasury here (Schema?) is my data located --> turn into valid data array
+  - Treasurer here (Schema?) is my header located --> turn into valid header array
+  - Treasurer here (Schema?) is my data located --> turn into valid data array
 - other formats: *.dat, *.mat, *.sql(?)
 - adding codecoverage

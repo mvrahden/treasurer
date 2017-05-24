@@ -1,20 +1,20 @@
-# Treasury [![Build Status](https://travis-ci.com/mvrahden/treasury.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasury) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+# Treasurer [![Build Status](https://travis-ci.com/mvrahden/treasurer.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasurer) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
 > A dependency-free tool to read and write *feature-sets* (2D data) as *.json, *.csv or *.txt.
 
 # Install
 Install it using the following command:
 ```
-npm install treasury
+npm install treasurer
 ```
 
 # Usage
 
 Read data from file and always get the data in the same strucute:
 ```javascript
-let Treasury = require('treasury');
+let Treasurer = require('treasurer');
 
-let content = Treasury.readFrom('./path/to/file.csv');
+let content = Treasurer.readFrom('./path/to/file.csv');
 // csv, json or txt (as 2D dataset) accepted
 
 console.log(content.header);
@@ -25,11 +25,11 @@ console.log(content.data);
 
 Write data to any given file:
 ```javascript
-let Treasury = require('treasury');
+let Treasurer = require('treasurer');
 
 //... prepare a header and data
 
-Treasury.
+Treasurer.
   .setHeader(header)  // 1D Array of Strings and/or Numbers
   .setData(data)      // 2D Array of Strings and/or Numbers
   .writeTo('./path/to/file.csv'); // csv, json or txt accepted

@@ -1,5 +1,5 @@
 {
-  "name": "treasury",
+  "name": "treasurer",
   "version": "0.9.0",
   "description": "Tool to read and write feature-sets in form of *.json or *.csv.",
   "main": "index.js",
@@ -8,20 +8,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mvrahden/treasury.git"
+    "url": "git+https://github.com/mvrahden/treasurer.git"
   },
   "keywords": [
     "read",
     "write",
     "json",
-    "csv"
+    "csv",
+    "dependency-free",
+    "nodejs"
   ],
   "author": "Menno van Rahden",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/mvrahden/treasury/issues"
+    "url": "https://github.com/mvrahden/treasurer/issues"
   },
-  "homepage": "https://github.com/mvrahden/treasury#readme",
+  "homepage": "https://github.com/mvrahden/treasurer#readme",
   "devDependencies": {
     "jasmine": "^2.6.0",
     "lodash": "^4.17.4"
