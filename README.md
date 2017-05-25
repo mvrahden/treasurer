@@ -1,9 +1,9 @@
 # Treasurer [![Build Status](https://travis-ci.com/mvrahden/treasurer.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasurer) ![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg) [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
-> A dependency-free tool to read and write *feature-sets* (2D data) as *.json, *.csv or *.txt.
+> A dependency-free tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.txt.
 
 # Install
-Install it using the following command:
+Install it using the following command in your command line:
 ```
 npm install treasurer
 ```
@@ -37,7 +37,7 @@ Treasurer.
 
 # API
 
-> Each method throws a String containing a message in case of false usage.
+> In case of false usage each method throws an Error containing a message.
 
 ## Read
 #### Method: `readFrom(path: String): Object`
