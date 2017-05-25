@@ -1,6 +1,6 @@
 {
   "name": "treasurer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Tool to read and write feature-sets in form of *.json or *.csv.",
   "main": "index.js",
   "scripts": {
