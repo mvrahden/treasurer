@@ -13,17 +13,17 @@ let config = {
  * Reads the content of the given file path.
  * @param {String} filePath - String representation of a file path.
  * @returns {Object} dataSet-Object containing the header and the corresponding data.
- * @throws Message if input doesn't meet the accepted scope or if the writing process was aborted.
+ * @throws Error if input doesn't meet the accepted scope or if the writing process was aborted.
  */
 const readFrom = function(filePath) {
-  if(!isValidPath(filePath)) throw "json-path: Please provide a valid path.";
+  if(!isValidPath(filePath)) throw Error("json-path: Please provide a valid path.");
   preparePathConfig(filePath);
   try {
     return read();
   } catch(err) {
-    if(/ENOENT/.test(err)) throw "readFrom: No such file or directory. (ENOENT)"
-    if(/EACCES/.test(err)) throw "writeTo: Permission denied. (EACCES)"
-    if(/ECANCELED/.test(err)) throw "writeTo: Operation canceled. (ECANCELED)"
+    if(/ENOENT/.test(err)) throw Error("readFrom: No such file or directory. (ENOENT)")
+    if(/EACCES/.test(err)) throw Error("writeTo: Permission denied. (EACCES)")
+    if(/ECANCELED/.test(err)) throw Error("writeTo: Operation canceled. (ECANCELED)")
     throw err;
   }
 };

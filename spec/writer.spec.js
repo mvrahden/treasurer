@@ -1,5 +1,4 @@
 'use strict';
-let fs = require('fs');
 let execSync = require('child_process').execSync;
 
 const writer = require('../src/writer');
@@ -23,7 +22,7 @@ describe('Writer', () => {
         writer
         .setData(someValidContent.data)
         .setHeader(someValidContent.header);
-      }).toThrow();
+      }).toThrowError(/function/);
     });
   });
 
@@ -42,11 +41,11 @@ describe('Writer', () => {
     const someValidContent = validContents[0];
     invalidPaths.forEach((path)=> {
       expect(() => {
-        Treasurer
+        writer
           .setHeader(someValidContent.header)
           .setData(someValidContent.data)
           .writeTo(path);
-      }).toThrow();
+      }).toThrowError(/path/);
     });
   });
 
@@ -54,11 +53,11 @@ describe('Writer', () => {
     invalidContents.forEach((content) => {
       validPaths.forEach((path)=> {
         expect(() => {
-          Treasurer
+          writer
             .setHeader(content.header)
             .setData(content.data)
             .writeTo(path)
-        }).toThrow();
+        }).toThrowError(/(setHeader|setData)/);
       });
     });
   });

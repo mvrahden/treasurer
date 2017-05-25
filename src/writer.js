@@ -18,10 +18,10 @@ let config = {
  * Captures the header.
  * @param {any[]} header - 1D Array of Strings and/or Numbers.
  * @returns {Function} setData.
- * @throws Message if input doesn't meet the accepted scope.
+ * @throws Error if input doesn't meet the accepted scope.
  */
 const setHeader = function(header) {
-  if(!isValidHeader(header)) throw "json-header: Accepts only 1-d Arrays with valid Strings and Numbers.";
+  if(!isValidHeader(header)) throw Error("setHeader: Accepts only 1-d Arrays with valid Strings and Numbers.");
   config.content.header = header;
   return dataSetter;
 };
@@ -32,12 +32,12 @@ const setHeader = function(header) {
  * Transforms undefined and null into empty Strings.
  * @param {any[][]} data - 2D Array of mixed values.
  * @returns {Function} writeTo.
- * @throws Message if input doesn't meet the accepted scope.
+ * @throws Error if input doesn't meet the accepted scope.
  */
 const setData = function(data) {
-  if(!isValidDataStructure(data)) throw "setData: accepts only 2-d Arrays.";
+  if(!isValidDataStructure(data)) throw Error("setData: accepts only 2-d Arrays.");
   data = cleanData(data);
-  if(!isValidData(data)) throw "setData: accepts only 2-d Arrays with Strings, Numbers and/or Booleans.";
+  if(!isValidData(data)) throw Error("setData: accepts only 2-d Arrays with Strings, Numbers and/or Booleans.");
   config.content.data = data;
   return pathSetter;
 };
@@ -45,18 +45,18 @@ const setData = function(data) {
 /**
  * Captures the file path and writes the given content to the file.
  * @param {String} filePath - String representation of the file path.
- * @throws Message if input doesn't meet the accepted scope or if the writing process was aborted.
+ * @throws Error if input doesn't meet the accepted scope or if the writing process was aborted.
  */
 const writeTo = function(filePath) {
-  if(!isValidPath(filePath)) throw "writeTo: Please provide a valid path.";
+  if(!isValidPath(filePath)) throw Error("writeTo: Please provide a valid path.");
   filePath = path.normalize(filePath);
   config.file = path.parse(filePath);
   try {
     write();
   } catch(err) {
-    if(/ENOENT/.test(err)) throw "writeTo: No such file or directory. (ENOENT)"
-    if(/EACCES/.test(err)) throw "writeTo: Permission denied. (EACCES)"
-    if(/ECANCELED/.test(err)) throw "writeTo: Operation canceled. (ECANCELED)"
+    if(/ENOENT/.test(err)) throw Error("writeTo: No such file or directory. (ENOENT)")
+    if(/EACCES/.test(err)) throw Error("writeTo: Permission denied. (EACCES)")
+    if(/ECANCELED/.test(err)) throw Error("writeTo: Operation canceled. (ECANCELED)")
     throw err;
   }
 };
