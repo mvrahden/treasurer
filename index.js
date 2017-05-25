@@ -5,4 +5,4 @@ let reader = require('./src/reader');
 module.exports = {
   setHeader: writer.setHeader,
   readFrom: reader.readFrom
-}
+};

@@ -13,7 +13,6 @@ const cleanTestDirectory = function() {
 };
 
 describe('Writer', () => {
-
   const someValidContent = validContents[1];
 
   it('shouldn\'t be configured in any deviating order from header, data, path.', () => {
@@ -56,7 +55,7 @@ describe('Writer', () => {
           writer
             .setHeader(content.header)
             .setData(content.data)
-            .writeTo(path)
+            .writeTo(path);
         }).toThrowError(/(setHeader|setData)/);
       });
     });
@@ -65,5 +64,4 @@ describe('Writer', () => {
   afterAll(() => {
     cleanTestDirectory();
   });
-
 });

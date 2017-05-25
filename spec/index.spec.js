@@ -21,9 +21,7 @@ const writeAnyValidData = function(content, path) {
 };
 
 describe('Treasurer:', () => {
-
   describe('Writer', () => {
-    
     beforeEach(() => {
       cleanTestDirectory();
     });
@@ -35,7 +33,7 @@ describe('Treasurer:', () => {
             Treasurer
               .setHeader(content.header)
               .setData(content.data)
-              .writeTo(path)
+              .writeTo(path);
           }).not.toThrowError();
           expect(fs.existsSync(path)).toBe(true);
         });
@@ -45,17 +43,15 @@ describe('Treasurer:', () => {
     afterAll(() => {
       cleanTestDirectory();
     });
-
   });
 
   describe('Reader', () => {
-
     beforeAll(() => {
       let content = validContents[0];
       validPaths.forEach((path)=> {
         writeAnyValidData(content, path);
       });
-    })
+    });
 
     it('should be able to read the files content.', () => {
       validContents.forEach((content) => {
@@ -67,11 +63,9 @@ describe('Treasurer:', () => {
         });
       });
     });
-
   });
 
   describe('Treasurer', () => {
-
     it('should be able to reconstruct the (cleaned) data that was written by reading the files, e.g. Numbers formatted as Strings.', () => {
       validContents.forEach((content) => {
         validPaths.forEach((path)=> {
@@ -85,11 +79,9 @@ describe('Treasurer:', () => {
         });
       });
     });
-
   });
 
   afterAll(() => {
     cleanTestDirectory();
   });
-
 });

@@ -1,8 +1,8 @@
 'use strict';
 /**
  * Cleans unwanted values (undefined, null) of a 2D Array.
- * @param {any[][]} dataSet - 2D Array of mixed values.
- * @returns {any[][]} dataSet with cleaned values.
+ * @param {Array} dataSet - 2D Array of mixed values.
+ * @returns {Array} dataSet with cleaned values.
  */
 const cleanData = function(dataSet) {
   let cleanedDataSet = [];
@@ -11,20 +11,20 @@ const cleanData = function(dataSet) {
     cleanedDataSet.push(cleanedRow);
   });
   return cleanedDataSet;
-}
+};
 
   const cleanRow = function(row) {
     let cleanedRow = [];
     row.forEach((element) => {
       element = cleanElement(element);
       cleanedRow.push(element);
-    })
+    });
     return cleanedRow;
-  }
+  };
 
     const cleanElement = function(element) {
       if(element === undefined || element === null) return '';
-      return element
-    }
+      return element;
+    };
 
 module.exports = cleanData;

@@ -1,7 +1,7 @@
 module.exports = [
     undefined,
     null,
-    "falseValue",
+    'falseValue',
     1.5,
     [],
   ];

@@ -12,10 +12,10 @@ let isValid = function(header) {
   if(header.length === 0) return false;
   for(let i=0; i<header.length; i++) if(!isValidElement(header[i])) return false;
   return true;
-}
+};
 
 let isValidElement = function(element) {
   return !(element === undefined) && !(element === null) && !(element instanceof Object);
-}
+};
 
 module.exports = isValid;

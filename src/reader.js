@@ -7,23 +7,23 @@ const isValidPath = require('./utils/validatePath');
 let config = {
   file: {},
   content: {}
-}
+};
 
 /**
  * Reads the content of the given file path.
  * @param {String} filePath - String representation of a file path.
  * @returns {Object} dataSet-Object containing the header and the corresponding data.
- * @throws Error if input doesn't meet the accepted scope or if the writing process was aborted.
+ * @throws {Error} if input doesn't meet the accepted scope or if the writing process was aborted.
  */
 const readFrom = function(filePath) {
-  if(!isValidPath(filePath)) throw Error("json-path: Please provide a valid path.");
+  if(!isValidPath(filePath)) throw Error('json-path: Please provide a valid path.');
   preparePathConfig(filePath);
   try {
     return read();
   } catch(err) {
-    if(/ENOENT/.test(err)) throw Error("readFrom: No such file or directory. (ENOENT)")
-    if(/EACCES/.test(err)) throw Error("writeTo: Permission denied. (EACCES)")
-    if(/ECANCELED/.test(err)) throw Error("writeTo: Operation canceled. (ECANCELED)")
+    if(/ENOENT/.test(err)) throw Error('readFrom: No such file or directory. (ENOENT)');
+    if(/EACCES/.test(err)) throw Error('writeTo: Permission denied. (EACCES)');
+    if(/ECANCELED/.test(err)) throw Error('writeTo: Operation canceled. (ECANCELED)');
     throw err;
   }
 };
@@ -31,14 +31,14 @@ const readFrom = function(filePath) {
   const preparePathConfig = function(filePath) {
     filePath = path.normalize(filePath);
     config.file = path.parse(filePath);
-  }
+  };
 
   const read = function() {
     const filePath = config.file.dir + path.sep + config.file.base;
     const rawData = fs.readFileSync(filePath).toString();
     const data = convertData(rawData, config.file.ext);
     return data;
-  }
+  };
 
     const convertData = function(data, ext) {
       if(ext === '.csv') return convertFromCSV(data);
@@ -47,17 +47,17 @@ const readFrom = function(filePath) {
         if(value === 'NaN') return Number.NaN;
         return value;
       });
-    }
+    };
 
       const convertFromCSV = function(data) {
         config.content.header = getHeaderFromCSV(data);
         config.content.data = getDataFromCSV(data);
         return config.content;
-      }
+      };
 
         const getHeaderFromCSV = function(data) {
           return data.split('\n')[0].split(',').map(mapEachValue);
-        }
+        };
 
         const getDataFromCSV = function(data) {
           const rows = data.split('\n');
@@ -70,32 +70,32 @@ const readFrom = function(filePath) {
             }
           }
           return csvData;
-        }
+        };
 
           const mapEachValue = function(value) {
-            if(value === "undefined") return undefined;
-            if(value === "null") return null;
-            if(value === "true") return true;
-            if(value === "false") return false;
-            if(value === "NaN") return Number.NaN;
-            if(/^"(.*(?="$))"$/.test(value)) return value.slice(1,-1);
+            if(value === 'undefined') return undefined;
+            if(value === 'null') return null;
+            if(value === 'true') return true;
+            if(value === 'false') return false;
+            if(value === 'NaN') return Number.NaN;
+            if(/^"(.*(?="$))"$/.test(value)) return value.slice(1, -1);
             if(!Number.isNaN(Number(value))) return Number(value);
             return value;
-          }
+          };
 
       const convertFromTXT = function(data) {
-        config.content.header = getHeaderFromCSV(data);
-        config.content.data = getDataFromCSV(data);
+        config.content.header = getHeaderFromTXT(data);
+        config.content.data = getDataFromTXT(data);
         return config.content;
-      }
+      };
 
         const getHeaderFromTXT = function(data) {
           return getHeaderFromCSV(data);
-        }
-      
+        };
+
         const getDataFromTXT = function(data) {
           return getDataFromCSV(data);
-        }
+        };
 
 const fileBuilder = {
   readFrom: readFrom
