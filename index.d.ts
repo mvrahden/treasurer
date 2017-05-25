@@ -9,7 +9,7 @@ declare interface Treasurer{
    * @returns {Function} setData.
    * @throws {Error} if input doesn't meet the accepted scope.
    */
-  setHeader(header: Array): setData
+  setHeader(header: Array<any>): DataSetter
 
   /**
    * Reads the content of the given file path.
@@ -18,29 +18,34 @@ declare interface Treasurer{
    * @throws {Error} if input doesn't meet the accepted scope or if the writing process was aborted.
    */
   readFrom(path: String): DataObject
+
 }
 
-/**
- * Captures the data.
- * Accepts Numbers (1, 1.234, NaN), Strings ('abc', ''), booleans (true, false) and undefined & null.
- * Transforms undefined and null into empty Strings.
- * @param {Array} data - 2D Array of mixed values.
- * @returns {Function} writeTo.
- * @throws {Error} if input doesn't meet the accepted scope.
- */
-declare function setData(data: Array): writeTo
+declare interface DataSetter {
+  /**
+   * Captures the data.
+   * Accepts Numbers (1, 1.234, NaN), Strings ('abc', ''), booleans (true, false) and undefined & null.
+   * Transforms undefined and null into empty Strings.
+   * @param {Array} data - 2D Array of mixed values.
+   * @returns {Function} writeTo.
+   * @throws {Error} if input doesn't meet the accepted scope.
+   */
+  setData(data: Array<any>): FileWriter
+}
 
-/**
- * Captures the file path and writes the given content to the file.
- * @param {String} filePath - String representation of the file path.
- * @returns {void}
- * @throws {Error} if input doesn't meet the accepted scope or if the writing process was aborted.
- */
-declare function writeTo(path: String): void
+declare interface FileWriter {
+  /**
+   * Captures the file path and writes the given content to the file.
+   * @param {String} filePath - String representation of the file path.
+   * @returns {void}
+   * @throws {Error} if input doesn't meet the accepted scope or if the writing process was aborted.
+   */
+  writeTo(path: String): void
+}
 
 declare class DataObject {
-  header: Array
-  data: Array
+  header: Array<any>
+  data: Array<Array<any>>
 }
 
 export = Treasurer;
