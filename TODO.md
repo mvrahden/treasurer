@@ -27,6 +27,12 @@
 - other formats: *.dat, *.mat, *.sql(?)
 - adding codecoverage
 
+## v1.1
+- async read
+  - inject callback
+- async write
+  - inject callback
+
 ## v2.0
 - transform(...).
   - toObjectOfRowArray() # { header:[...], data:[ [...], [...], ... ] }
