@@ -43,7 +43,7 @@
   - inject callback
 
 ## v1.1
-- only delimit those string values that contain spaces | are delimited with quotes | or numbers formatted Strings
+- ~~only delimit those string values that contain spaces | are delimited with quotes | or numbers formatted Strings~~
 
 ## v1.0a
 - ~~first release candidate~~
