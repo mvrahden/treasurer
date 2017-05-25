@@ -2,12 +2,13 @@
 > Changelog and future features: Order is **bottom up**
 
 # Known Issues
-- currently none
+- solved: ~~relative file path referring to current directory ('./filename.ext' | 'filename.ext') leads to ENOENT-Error~~
 
 # Future features
 ## version undefined
 - other formats: *.dat, *.mat, *.sql(?)
 - adding codecoverage
+- add test for relative path issue
 
 ## v3.0
 - dynamic agregation of data into the needed form
@@ -35,11 +36,14 @@
   - UNCERTAIN: asArrayOfColumnArrays() # [ [...], [...], ... ]
   - UNCERTAIN: asArrayOfRowArrays() # [ [...], [...], ... ]
 
-## v1.1
+## v1.2
 - async read
   - inject callback
 - async write
   - inject callback
+
+## v1.1
+- only delimit those string values that contain spaces | are delimited with quotes | or numbers formatted Strings
 
 ## v1.0a
 - ~~first release candidate~~

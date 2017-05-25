@@ -62,11 +62,16 @@ const writeTo = function(filePath) {
 };
 
   const write = function() {
-    const filePath = config.file.dir + path.sep + config.file.base;
+    const filePath = createFilePath();
     const data = convertData(config.content.header, config.content.data, config.file.ext);
     createNonexistingDirectories();
     fs.writeFileSync(filePath, data);
   };
+
+    const createFilePath = function() {
+      if(config.file.dir === '') return '.' + path.sep + config.file.base;
+      else return config.file.dir + path.sep + config.file.base;
+    };
 
     const convertData = function(header, data, ext) {
       if(ext === '.csv') return convertToCSV(header, data);

@@ -34,11 +34,16 @@ const readFrom = function(filePath) {
   };
 
   const read = function() {
-    const filePath = config.file.dir + path.sep + config.file.base;
+    const filePath = createFilePath();
     const rawData = fs.readFileSync(filePath).toString();
     const data = convertData(rawData, config.file.ext);
     return data;
   };
+
+    const createFilePath = function() {
+      if(config.file.dir === '') return '.' + path.sep + config.file.base;
+      else return config.file.dir + path.sep + config.file.base;
+    };
 
     const convertData = function(data, ext) {
       if(ext === '.csv') return convertFromCSV(data);
