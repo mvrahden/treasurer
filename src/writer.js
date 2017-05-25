@@ -85,14 +85,17 @@ const writeTo = function(filePath) {
       const convertToCSV = function(header, data) {
         let outputString = header.join(',') + '\n';
         data.forEach((row) => {
-          outputString += row.map(mapEscapeStringValues).join(',') + '\n';
+          outputString += row.map(stringValueDelimitation).join(',') + '\n';
         });
         return outputString;
       };
 
-        const mapEscapeStringValues = function(value) {
+        const stringValueDelimitation = function(value) {
           if(typeof value === 'string' || value instanceof String) {
-            return ('"'+value+'"');
+            if(value === '') return ('""'); // empty string
+            if(/\s/g.test(value)) return ('"'+value+'"'); // string contains spaces
+            if(/^"(.*(?="$))"$/.test(value) || /^'(.*(?='$))'$/.test(value)) return ('"'+value+'"'); // string is delimited with quotes
+            if(/^[+-]?(?=\d+)(?:\d+,)*\d*(?:\.\d+)?$/.test(value)) return ('"'+value+'"'); // string has number format
           }
           return value;
         };
