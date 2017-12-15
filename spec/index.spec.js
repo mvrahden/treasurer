@@ -1,10 +1,12 @@
 'use strict';
+const _DIR_ = '../dist';
+
+const Treasurer = require(_DIR_+'/index').Treasurer;
+const FileValidator = require(_DIR_+'/utils/file-validator').FileValidator;
+
 const fs = require('fs');
 const execSync = require('child_process').execSync;
 const _ = require('lodash');
-
-const Treasurer = require('../index');
-const clean = require('../src/utils/cleanData');
 
 const validPaths = require('./testingData/validPaths');
 const validContents = require('./testingData/validFileContents');
@@ -15,6 +17,7 @@ const cleanTestDirectory = function() {
 
 const writeAnyValidData = function(content, path) {
   Treasurer
+    .fileWriter()
     .setHeader(content.header)
     .setData(content.data)
     .writeTo(path);
@@ -31,6 +34,7 @@ describe('Treasurer:', () => {
         validPaths.forEach((path)=> {
           expect(() => {
             Treasurer
+              .fileWriter()
               .setHeader(content.header)
               .setData(content.data)
               .writeTo(path);
@@ -58,7 +62,9 @@ describe('Treasurer:', () => {
         validPaths.forEach((path)=> {
           expect(fs.existsSync(path)).toBe(true);
           expect(() => {
-            Treasurer.readFrom(path);
+            Treasurer
+              .fileReader()
+              .readFrom(path);
           }).not.toThrow();
         });
       });
@@ -72,8 +78,8 @@ describe('Treasurer:', () => {
           writeAnyValidData(content, path);
           expect(fs.existsSync(path)).toBe(true);
           expect(function() {
-            const res = Treasurer.readFrom(path);
-            content.data = clean(content.data);
+            const res = Treasurer.fileReader().readFrom(path);
+            content.data = FileValidator.cleanData(content.data);
             return _.isEqual(res, content);
           }()).toBe(true);
         });

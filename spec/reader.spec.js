@@ -1,6 +1,7 @@
 'use strict';
+const _DIR_ = '../dist';
 
-const reader = require('../src/reader');
+const FileReader = require(_DIR_+'/reader').FileReader;
 
 const invalidPaths = require('./testingData/invalidPaths');
 
@@ -8,7 +9,7 @@ describe('Reader', () => {
   it('should throw an error if given a false path.', () => {
     invalidPaths.forEach((path)=> {
       expect(() => {
-        reader.readFrom(path);
+        new FileReader().readFrom(path);
       }).toThrowError(/path/);
     });
   });

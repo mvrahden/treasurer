@@ -1,7 +1,9 @@
 'use strict';
+const _DIR_ = '../dist';
+
 let execSync = require('child_process').execSync;
 
-const writer = require('../src/writer');
+const FileWriter = require(_DIR_+'/writer').FileWriter;
 
 const validPaths = require('./testingData/validPaths');
 const invalidPaths = require('./testingData/invalidPaths');
@@ -18,9 +20,9 @@ describe('Writer', () => {
   it('shouldn\'t be configured in any deviating order from header, data, path.', () => {
     validPaths.forEach((path) => {
       expect(() => {
-        writer
-        .setData(someValidContent.data)
-        .setHeader(someValidContent.header);
+        new FileWriter()
+          .setData(someValidContent.data)
+          .setHeader(someValidContent.header);
       }).toThrowError(/function/);
     });
   });
@@ -28,10 +30,10 @@ describe('Writer', () => {
   it('should be configured in the following order: header, data, path.', () => {
     validPaths.forEach((path) => {
       expect(() => {
-        writer
-        .setHeader(someValidContent.header)
-        .setData(someValidContent.data)
-        .writeTo(path);
+        new FileWriter()
+          .setHeader(someValidContent.header)
+          .setData(someValidContent.data)
+          .writeTo(path);
       }).not.toThrow();
     });
   });
@@ -40,7 +42,7 @@ describe('Writer', () => {
     const someValidContent = validContents[0];
     invalidPaths.forEach((path)=> {
       expect(() => {
-        writer
+        new FileWriter()
           .setHeader(someValidContent.header)
           .setData(someValidContent.data)
           .writeTo(path);
@@ -52,7 +54,7 @@ describe('Writer', () => {
     invalidContents.forEach((content) => {
       validPaths.forEach((path)=> {
         expect(() => {
-          writer
+          new FileWriter()
             .setHeader(content.header)
             .setData(content.data)
             .writeTo(path);

@@ -1,5 +1,7 @@
 'use strict';
-const isValid = require('../../src/utils/validateHeader');
+const _DIR_ = './../../dist';
+
+const FileValidator = require(_DIR_ + '/utils/file-validator').FileValidator;
 
 describe('The validation of headers expects a 1D-Array of Strings or Numbers.', () => {
   const falseHeaders = [
@@ -20,13 +22,13 @@ describe('The validation of headers expects a 1D-Array of Strings or Numbers.', 
 
   it('Does not accept undefined, null or empty or deep/nested structures.', () => {
     falseHeaders.forEach((falseHeader) => {
-      expect(isValid(falseHeader)).toBe(false);
+      expect(FileValidator.isValidHeader(falseHeader)).toBe(false);
     });
   });
 
   it('Does accept Strings and Numbers', () => {
     validHeaders.forEach((validHeader) => {
-      expect(isValid(validHeader)).toBe(true);
+      expect(FileValidator.isValidHeader(validHeader)).toBe(true);
     });
   });
 });

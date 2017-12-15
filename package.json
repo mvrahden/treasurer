@@ -2,9 +2,9 @@
   "name": "treasurer",
   "version": "1.1.0",
   "description": "Tool to read and write feature-sets in form of *.json or *.csv.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "pretest": "./node_modules/.bin/eslint ./ --fix",
+    "pretest": "tsc -p .",
     "test": "./node_modules/.bin/jasmine"
   },
   "repository": {
@@ -26,8 +26,7 @@
   },
   "homepage": "https://github.com/mvrahden/treasurer#readme",
   "devDependencies": {
-    "eslint": "^3.19.0",
-    "eslint-config-google": "^0.7.1",
+    "@types/node": "^8.5.1",
     "jasmine": "^2.6.0",
     "lodash": "^4.17.4"
   },
