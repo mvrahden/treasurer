@@ -2,19 +2,32 @@
 
 > A dependency-free tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.txt.
 
-# Install
-Install it using the following command in your command line:
+# For Developers
+## How to Install
+Install Treasurer as a Dependency using the following command in your command line:
 ```
-npm install treasurer
+npm install --save treasurer
 ```
 
-# Usage
+## How to Require (JavaScript)
 
-Read data from file and always get the data in the same strucute:
 ```javascript
-let Treasurer = require('treasurer');
+let Treasurer = require('treasurer').Treasurer;
+```
 
-let content = Treasurer.readFrom('./path/to/file.csv');
+## How to Import (TypeScript)
+
+```typescript
+import { Treasurer } from 'treasurer';
+```
+
+## How to Use
+
+**Read data** from file and always get the data in the same strucute:
+```javascript
+// import/require Treasurer
+
+let content = Treasurer.fileReader().readFrom('./path/to/file.csv');
 // csv, json or txt (as 2D dataset) accepted
 
 console.log(content.header);
@@ -23,19 +36,20 @@ console.log(content.data);
   // --> 2D Array of Strings, Numbers and/or Boolean
 ```
 
-Write data to any given file:
+**Write data** to any given file:
 ```javascript
-let Treasurer = require('treasurer');
+// import/require Treasurer
 
 //... prepare a header and data
 
 Treasurer.
+  .fileWriter()
   .setHeader(header)  // 1D Array of Strings and/or Numbers
   .setData(data)      // 2D Array of Strings and/or Numbers
   .writeTo('./path/to/file.csv'); // csv, json or txt accepted
 ```
 
-# API
+# API-Description
 
 > In case of false usage each method throws an Error containing a message.
 
@@ -91,7 +105,7 @@ This project is meant to be *lightweight*, *easy to use* and limited to the init
 
 Please feel free to contribute to this project as much as you wish to. Before triggering a pull-request, please make sure that you've run all the tests via the *testing command*:
 ```
-npm test
+npm run test
 ```
 
 # Coding Code
@@ -100,5 +114,8 @@ When you're coding, try to...
 - encapsulate complex things in methods with expressive names.
 - not hide any relevant information for other colleagues.
 - never use comments when you can express things through code - so: never use comments.
-- keep methods small and simple to interpret.
+- keep methods small and simple for interpretion.
 - leave places always a bit cleaner than you've found them.
+
+# License
+This Project is licensed under the *"revised" BSD-3-Clause*.

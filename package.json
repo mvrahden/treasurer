@@ -4,8 +4,10 @@
   "description": "Tool to read and write feature-sets in form of *.json or *.csv.",
   "main": "dist/index.js",
   "scripts": {
-    "pretest": "tsc -p .",
-    "test": "./node_modules/.bin/jasmine"
+    "build": "tsc -p .",
+    "pretest": "npm run build",
+    "test": "./node_modules/.bin/jasmine",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
