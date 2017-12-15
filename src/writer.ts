@@ -16,7 +16,7 @@ export class FileWriter {
    * @returns {Function} setData.
    * @throws {Error} if input doesn't meet the accepted scope.
    */
-  public setHeader (header) {
+  public setHeader (header): DataSetter {
     if (!FileValidator.isValidHeader(header)) { throw Error('setHeader: Accepts only 1-d Arrays with valid Strings and Numbers.'); }
     this.content.header = header;
     return new DataSetter(this.content);
@@ -39,7 +39,7 @@ export class DataSetter {
    * @returns {Function} writeTo.
    * @throws {Error} if input doesn't meet the accepted scope.
    */
-  public setData(data) {
+  public setData(data): PathSetter {
     if (!FileValidator.isValidDataStructure(data)) { throw Error('setData: accepts only 2-d Arrays.'); }
     data = FileValidator.cleanData(data);
     if (!FileValidator.isValidData(data)) { throw Error('setData: accepts only 2-d Arrays with Strings, Numbers and/or Booleans.'); }

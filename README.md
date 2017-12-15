@@ -1,8 +1,8 @@
-# Treasurer [![Build Status](https://travis-ci.com/mvrahden/treasurer.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasurer) ![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg) [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
+# Treasurer
+[![Build Status](https://travis-ci.com/mvrahden/treasurer.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasurer) ![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg) [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
 > A dependency-free tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.txt.
 
-# For Developers
 ## How to Install
 Install Treasurer as a Dependency using the following command in your command line:
 ```
@@ -51,7 +51,7 @@ Treasurer.
 
 # API-Description
 
-> In case of false usage each method throws an Error containing a message.
+In case of false usage each method throws an Error containing a message.
 
 ## Read
 #### Method: `readFrom(path: String): Object`
@@ -63,14 +63,14 @@ Treasurer.
 - returns an `Object` containing:
   - `header`: 1D-Array of mixed values.
   - `data`: 2D-Array of corresponding data mixed values.
-- throws a message if input doesn't meet the accepted scope
+- throws a message if input doesn't meet the expected scope
 
 ## Write
 #### Method: `setHeader(header[]: Array<String>): Function`
 - `header`: 1D-Array of Column Names
   - Valid data types: Strings and Numbers
 - returns `setData: Function`
-- throws a message if input doesn't meet the accepted scope
+- throws a message if input doesn't meet the expected scope
 
 #### Method: `setData(data[][]: Array): Function`
 - `data`: 2D-Array of mixed values
@@ -82,7 +82,7 @@ Treasurer.
     - `undefined`, `null` are being translated to `''` (empty String)
 - returns `writeTo: Function` (represented by `writeTo`)
 - throws a message if
-  - input doesn't meet the accepted scope, e.g. nested structures like `Objects`, `Arrays`
+  - input doesn't meet the expected scope, e.g. nested structures like `Objects`, `Arrays`
 
 #### Method: `writeTo(path: String): void`
 - `path`: String containing the path to the output-file; e.g.:
@@ -93,12 +93,12 @@ Treasurer.
 - sets the path and writes the data to the output-file
   - for the sake of usability, this methods violates the Single Responsibility Principle
 - throws a message if
-  - input doesn't meet the accepted scope or
+  - input doesn't meet the expected scope or
   - if the writing process was aborted.
 
 # Scope Definition
 This project is meant to be *lightweight*, *easy to use* and limited to the initial scope of:
-> reading and persisting 2D-DataSets in any common format.
+* reading and persisting 2D-DataSets in any common format.
 
 # Community Contribution
 > Everybody is more than welcome to contribute!
