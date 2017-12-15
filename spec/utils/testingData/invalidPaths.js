@@ -1,7 +1,9 @@
 module.exports = [
-    undefined,
-    null,
-    'falseValue',
-    1.5,
-    [],
-  ];
+  [],
+  null,
+  undefined,
+  1.5,
+  './test/subdir/subsubdir/test.xlsx',
+  './test/subdir/subsubdir/test',
+  './test/subdir/subsubdir/test.doc'
+];

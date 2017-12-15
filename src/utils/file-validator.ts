@@ -102,7 +102,7 @@ export class FileValidator {
    * @param {Array} dataSet - 2D Array of mixed values.
    * @returns {Array} dataSet with cleaned values.
    */
-  public static cleanData (dataSet) {
+  public static cleanData (dataSet: any[][]): any[][] {
     const cleanedDataSet = [];
     dataSet.forEach((row) => {
       const cleanedRow = FileValidator.cleanRow(row);
@@ -111,7 +111,7 @@ export class FileValidator {
     return cleanedDataSet;
   };
 
-  private static cleanRow (row) {
+  private static cleanRow (row: any[]): any[] {
     const cleanedRow = [];
     row.forEach((element) => {
       element = FileValidator.cleanElement(element);
@@ -120,7 +120,7 @@ export class FileValidator {
     return cleanedRow;
   };
 
-  private static cleanElement (element) {
+  private static cleanElement (element: any): any {
     if (element === undefined || element === null) { return ''; }
     return element;
   };

@@ -5,10 +5,10 @@ let execSync = require('child_process').execSync;
 
 const FileWriter = require(_DIR_+'/writer').FileWriter;
 
-const validPaths = require('./testingData/validPaths');
-const invalidPaths = require('./testingData/invalidPaths');
-const validContents = require('./testingData/validFileContents');
-const invalidContents = require('./testingData/invalidFileContents');
+const validPaths = require('./utils/testingData/validPaths');
+const invalidPaths = require('./utils/testingData/invalidPaths');
+const validContents = require('./utils/testingData/validFileContents');
+const invalidContents = require('./utils/testingData/invalidFileContents');
 
 const cleanTestDirectory = function() {
   execSync('rm -rf ./test/');

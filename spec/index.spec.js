@@ -8,8 +8,8 @@ const fs = require('fs');
 const execSync = require('child_process').execSync;
 const _ = require('lodash');
 
-const validPaths = require('./testingData/validPaths');
-const validContents = require('./testingData/validFileContents');
+const validPaths = require('./utils/testingData/validPaths');
+const validContents = require('./utils/testingData/validFileContents');
 
 const cleanTestDirectory = function() {
   execSync('rm -rf ./test/');

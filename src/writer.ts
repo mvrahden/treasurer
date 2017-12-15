@@ -62,7 +62,7 @@ export class PathSetter {
    * @returns {void}
    * @throws {Error} if input doesn't meet the accepted scope or if the writing process was aborted.
    */
-  public writeTo(filePath) {
+  public writeTo(filePath: string): void {
     if (!FileValidator.isValidPath(filePath)) { throw Error('writeTo: Please provide a valid path.'); }
     filePath = path.normalize(filePath);
     this.file = path.parse(filePath);
@@ -88,18 +88,18 @@ export class PathSetter {
     else { return this.file.dir + path.sep + this.file.base; }
   }
 
-  private convertData(header, data, ext): string {
+  private convertData(header: any[], data: any[], ext): string {
     if (ext === '.csv') { return this.convertToCSV(header, data); }
     else if (ext === '.txt') { return this.convertToTXT(header, data); }
     else {
-      return JSON.stringify(new File(header, data), (key, value) => {
+      return JSON.stringify({ 'header': header, 'data': data }, (key, value) => {
         if (Number.isNaN(value)) { return 'NaN'; }
         return value;
       });
     }
   }
 
-  private convertToCSV(header, data): string {
+  private convertToCSV(header: any[], data: any[]): string {
     let outputString = header.join(',') + '\n';
     data.forEach((row) => {
       outputString += row.map(this.stringValueDelimitation).join(',') + '\n';
@@ -118,11 +118,11 @@ export class PathSetter {
     return value;
   }
 
-  private convertToTXT(header, data) {
+  private convertToTXT(header: any[], data: any[]): string {
     return this.convertToCSV(header, data);
   }
 
-  private createNonexistingDirectories() {
+  private createNonexistingDirectories(): void {
     this.file.dir.split(path.sep).reduce((dir, segment) => {
       this.createUnexisting(dir);
       dir = dir + path.sep + segment;
@@ -131,7 +131,7 @@ export class PathSetter {
     });
   }
 
-  private createUnexisting(dir) {
+  private createUnexisting(dir: string): void {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
