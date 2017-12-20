@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/mvrahden/treasurer#readme",
   "devDependencies": {
+    "@types/jasmine": "^2.8.2",
     "@types/node": "^8.5.1",
     "jasmine": "^2.6.0",
     "lodash": "^4.17.4",
