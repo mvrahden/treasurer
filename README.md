@@ -9,13 +9,13 @@ Install Treasurer as a Dependency using the following command in your command li
 npm install --save treasurer
 ```
 
-## How to Require (JavaScript)
+## How to require (in JavaScript)
 
 ```javascript
 let Treasurer = require('treasurer').Treasurer;
 ```
 
-## How to Import (TypeScript)
+## How to import (in TypeScript)
 
 ```typescript
 import { Treasurer } from 'treasurer';
@@ -51,9 +51,13 @@ Treasurer.
 
 # API-Description
 
-In case of false usage each method throws an Error containing a message.
+In case of false usage each method throws an Error containing a hint to the usage-error.
 
 ## Read
+
+#### Method: `fileReader(): Function`
+* Entry point for the File Reader Functionality.
+
 #### Method: `readFrom(path: String): Object`
 - `path`: String containing the path to the file; e.g.:
   - relative Posix Path: `path/to/file.json`
@@ -66,6 +70,10 @@ In case of false usage each method throws an Error containing a message.
 - throws a message if input doesn't meet the expected scope
 
 ## Write
+
+#### Method: `fileWriter(): Function`
+* Entry point for the File Writer Functionality.
+
 #### Method: `setHeader(header[]: Array<String>): Function`
 - `header`: 1D-Array of Column Names
   - Valid data types: Strings and Numbers
@@ -100,16 +108,27 @@ In case of false usage each method throws an Error containing a message.
 This project is meant to be *lightweight*, *easy to use* and limited to the initial scope of:
 * reading and persisting 2D-DataSets in any common format.
 
+# Current Limitations
+This framework supports basic tasks for basic use cases. The following limitations are known and intended to be taken care of in future releases:
+* no concurrency (async execution)
+* no fancy filesystem control
+* no convenience methods or option injection
+* no testing for Windows OS
+
 # Community Contribution
+
 > Everybody is more than welcome to contribute!
 
 Please feel free to contribute to this project as much as you wish to. Before triggering a pull-request, please make sure that you've run all the tests via the *testing command*:
+
 ```
 npm run test
 ```
 
-# Coding Code
+# Code of Conduct
+
 When you're coding, try to...
+
 - make things clear to everyone.
 - encapsulate complex things in methods with expressive names.
 - not hide any relevant information for other colleagues.
@@ -118,4 +137,5 @@ When you're coding, try to...
 - leave places always a bit cleaner than you've found them.
 
 # License
-This Project is licensed under the *"revised" BSD-3-Clause*.
+
+This Project is licensed under the [BSD-3-Clause](LICENSE).
