@@ -1,7 +1,4 @@
-'use strict';
-const _DIR_ = './../../dist';
-
-const FileValidator = require(_DIR_ + '/utils/file-validator').FileValidator;
+import { FileValidator } from "../../dist/utils/file-validator";
 
 const uncleanDataSets = [
   [['valid', undefined]],
@@ -13,10 +10,10 @@ const cleanDataSet = [['valid', '']];
 describe('Data cleaning', () => {
   it('should transform undefined and null to empty String \'\'', () => {
     uncleanDataSets.forEach((uncleanDataSet) => {
-      expect(function() {
-        let cleanDataSet = FileValidator.cleanData(uncleanDataSet);
+      expect((() => {
+        const cleanDataSet = FileValidator.cleanData(uncleanDataSet);
         return FileValidator.isValidData(cleanDataSet);
-      }()).toBe(true);
+      })()).toBe(true);
     });
   });
 

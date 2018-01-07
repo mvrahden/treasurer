@@ -1,14 +1,10 @@
-'use strict';
-const _DIR_ = './../../dist';
-
-const FileValidator = require(_DIR_ + '/utils/file-validator').FileValidator;
-
-const falseDataStructure = require('./testingData/invalidDataStructure');
-const validDataStructure = require('./testingData/validDataStructure');
+import { FileValidator } from '../../dist/utils/file-validator';
+import { Valid } from './testingData/validTestingData';
+import { Invalid } from './testingData/invalidTestingData';
 
 describe('A valid 2D-Array Data Structure', () => {
   it('should consist of exactly 2 Arrays.', () => {
-    falseDataStructure.forEach((dataSet) => {
+    Invalid.dataStructures.forEach((dataSet) => {
       expect(FileValidator.isValidDataStructure(dataSet)).toBe(false);
     });
   });
@@ -18,7 +14,7 @@ describe('A valid 2D-Array Data Structure', () => {
   });
 
   it('should accept any other 2D Array.', () => {
-    validDataStructure.forEach((dataSet) => {
+    Valid.dataStructures.forEach((dataSet) => {
       expect(FileValidator.isValidDataStructure(dataSet)).toBe(true);
     });
   });

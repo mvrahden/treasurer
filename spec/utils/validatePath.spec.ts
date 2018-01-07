@@ -1,27 +1,22 @@
-'use strict';
-const _DIR_ = './../../dist';
-
-const FileValidator = require(_DIR_+'/utils/file-validator').FileValidator;
-
-const falsePaths = require('./testingData/invalidPaths');
-const falseExtensions = require('./testingData/invalidExtensions');
-const validExtensions = require('./testingData/validExtensions');
+import { FileValidator } from '../../dist/utils/file-validator';
+import { Valid } from './testingData/validTestingData';
+import { Invalid } from './testingData/invalidTestingData';
 
 describe('Path validation', () => {
   it('does not accept non-String values.', () => {
-    falsePaths.forEach((path) => {
+    Invalid.paths.forEach((path: string) => {
       expect(FileValidator.isValidPath(path)).toBe(false);
     });
   });
 
   it('does not accept path with false extensions.', () => {
-    falseExtensions.forEach((path) => {
+    Invalid.extensions.forEach((path: string) => {
       expect(FileValidator.isValidPath(path)).toBe(false);
     });
   });
 
   it('does accept path declared valid extensions.', () => {
-    validExtensions.forEach((path) => {
+    Valid.extensions.forEach((path: string) => {
       expect(FileValidator.isValidPath(path)).toBe(true);
     });
   });

@@ -3,10 +3,19 @@
   "version": "1.2.3",
   "description": "Tool to read and write 2D-datasets in form of *.json or *.csv.",
   "main": "dist/index.js",
+  "typings": "dist/index",
+  "typescript": {
+    "definition": "dist/index"
+  },
+  "readme": "README.md",
   "scripts": {
+    "prepare": "npm run build",
     "build": "tsc -p .",
-    "pretest": "npm run build",
-    "test": "./node_modules/.bin/jasmine"
+    "prebuild:test": "npm run build",
+    "build:test": "tsc -p ./tsconfig.spec.json",
+    "pretest": "npm run build:test",
+    "test": "./node_modules/.bin/jasmine",
+    "posttest": "rimraf spec.dist"
   },
   "repository": {
     "type": "git",
@@ -17,8 +26,20 @@
     "write",
     "json",
     "csv",
+    "tsv",
+    "2d array",
+    "array",
     "dependency-free",
-    "nodejs"
+    "leightweight",
+    "file",
+    "file system",
+    "lightweight",
+    "2d-data",
+    "data",
+    "dataset",
+    "data set",
+    "2dimensional",
+    "2d"
   ],
   "author": "Menno van Rahden",
   "license": "BSD-3-Clause",
@@ -28,9 +49,11 @@
   "homepage": "https://github.com/mvrahden/treasurer#readme",
   "devDependencies": {
     "@types/jasmine": "^2.8.2",
+    "@types/lodash": "^4.14.92",
     "@types/node": "^8.5.1",
     "jasmine": "^2.6.0",
     "lodash": "^4.17.4",
+    "rimraf": "^2.6.2",
     "typescript": "^2.6.2"
   },
   "dependencies": {}

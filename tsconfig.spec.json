@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": false,
+    "declaration": false,
+    "rootDir": "./spec/",
+    "outDir": "./spec.dist/",
+    "types": [
+      "jasmine",
+      "node"
+    ]
+  },
+  "include": [
+    "spec/*.ts",
+    "spec/**/*.ts"
+  ]
+}

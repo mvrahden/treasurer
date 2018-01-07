@@ -4,30 +4,37 @@ import { ParsedPath } from 'path';
 
 import { FileValidator } from "./utils/file-validator";
 import { File } from './utils/file';
+import { WriterOpts } from './utils/writer-opts';
 
 export class FileWriter {
+  private options: WriterOpts;
   private content: File;
 
-  constructor() { this.content = { header: null, data: null }; }
+  constructor(options?: WriterOpts) {
+    this.options = options ? options : { sync: false, fileSystem: { encoding: 'utf8' } };
+    this.content = { header: null, data: null };
+  }
 
   /**
    * Captures the header.
-   * @param {Array} header - 1D Array of Strings and/or Numbers.
+   * @param {Array<string | number>} header - 1D Array of Strings and/or Numbers.
    * @returns {Function} setData.
    * @throws {Error} if input doesn't meet the accepted scope.
    */
-  public setHeader (header): DataSetter {
+  public setHeader(header: Array<string | number>): DataSetter {
     if (!FileValidator.isValidHeader(header)) { throw Error('setHeader: Accepts only 1-d Arrays with valid Strings and Numbers.'); }
     this.content.header = header;
-    return new DataSetter(this.content);
+    return new DataSetter(this.options, this.content);
   }
 
 }
 
 export class DataSetter {
-  private content;
+  private options: WriterOpts;
+  private content: File;
 
-  constructor(content: File) {
+  constructor(options: WriterOpts, content: File) {
+    this.options = options;
     this.content = content;
   }
 
@@ -35,24 +42,26 @@ export class DataSetter {
    * Captures the data.
    * Accepts Numbers (1, 1.234, NaN), Strings ('abc', ''), booleans (true, false) and undefined & null.
    * Transforms undefined and null into empty Strings.
-   * @param {Array} data - 2D Array of mixed values.
+   * @param {Array<Array<string | number | boolean>>} data - 2D Array of mixed values.
    * @returns {Function} writeTo.
    * @throws {Error} if input doesn't meet the accepted scope.
    */
-  public setData(data): PathSetter {
+  public setData(data: Array<Array<any>>): PathSetter {
     if (!FileValidator.isValidDataStructure(data)) { throw Error('setData: accepts only 2-d Arrays.'); }
     data = FileValidator.cleanData(data);
     if (!FileValidator.isValidData(data)) { throw Error('setData: accepts only 2-d Arrays with Strings, Numbers and/or Booleans.'); }
     this.content.data = data;
-    return new PathSetter(this.content);
+    return new PathSetter(this.options, this.content);
   }
 }
 
 export class PathSetter {
+  private options: WriterOpts;
   private file: ParsedPath = null;
   private content: File;
 
-  constructor(content: File) {
+  constructor(options: WriterOpts, content: File) {
+    this.options = options;
     this.content = content;
   }
 
@@ -69,10 +78,20 @@ export class PathSetter {
     try {
       this.write();
     } catch (err) {
-      if (/ENOENT/.test(err)) { throw Error('writeTo: No such file or directory. (ENOENT)'); }
-      if (/EACCES/.test(err)) { throw Error('writeTo: Permission denied. (EACCES)'); }
-      if (/ECANCELED/.test(err)) { throw Error('writeTo: Operation canceled. (ECANCELED)'); }
+      this.catchError(err);
       throw err;
+    }
+  }
+
+  private catchError(err: any) {
+    if (/ENOENT/.test(err)) {
+      throw Error('writeTo: No such file or directory. (ENOENT)');
+    }
+    if (/EACCES/.test(err)) {
+      throw Error('writeTo: Permission denied. (EACCES)');
+    }
+    if (/ECANCELED/.test(err)) {
+      throw Error('writeTo: Operation canceled. (ECANCELED)');
     }
   }
 
@@ -80,7 +99,13 @@ export class PathSetter {
     const filePath = this.createFilePath();
     const data = this.convertData(this.content.header, this.content.data, this.file.ext);
     this.createNonexistingDirectories();
-    fs.writeFileSync(filePath, data);
+    if (this.options.sync) { fs.writeFileSync(filePath, data, this.options.fileSystem); }
+    else {
+      const self = this;
+      fs.writeFile(filePath, data, this.options.fileSystem, (err) => {
+        self.catchError(err);
+      });
+    }
   }
 
   private createFilePath(): string {
@@ -88,7 +113,7 @@ export class PathSetter {
     else { return this.file.dir + path.sep + this.file.base; }
   }
 
-  private convertData(header: any[], data: any[], ext): string {
+  private convertData(header: any[], data: any[], ext: string): string {
     if (ext === '.csv') { return this.convertToCSV(header, data); }
     else if (ext === '.txt') { return this.convertToTXT(header, data); }
     else {

@@ -1,7 +1,14 @@
 # Tests and Test data
 spec
+spec.dist
+
+# Source Files
 src
 
 # Todo File
 TODO.md
+
+# Config Files
 .travis.yml
+tslint-google.json
+tslint.json
