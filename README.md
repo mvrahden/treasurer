@@ -3,50 +3,77 @@
 
 > A dependency-free tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.txt.
 
-## How to Install
-Install Treasurer as a Dependency using the following command in your command line:
+## For Production Use
+
+### How to install as dependency
+
+Download available `@npm`: [treasurer](https://www.npmjs.com/package/treasurer)
+
+Install via command line:
 ```
 npm install --save treasurer
 ```
 
-## How to require (in JavaScript)
+### How To use this Library in Production
 
-```javascript
-let Treasurer = require('treasurer').Treasurer;
-```
+Currently exposed Classes:
 
-## How to import (in TypeScript)
+* **Treasurer** - Lightweight tool with File-Reading and -Writing Facilities for 2D-Datasets
 
+These classes can be imported from this `npm` module, e.g.:
 ```typescript
 import { Treasurer } from 'treasurer';
 ```
 
-## How to Use
-
-**Read data** from file and always get the data in the same strucute:
+For JavaScript usage `require` classes from this `npm` module as follows:
 ```javascript
-// import/require Treasurer
+let Treasurer = require('treasurer').Treasurer;
+```
 
-let content = Treasurer.fileReader().readFrom('./path/to/file.csv');
-// csv, json or txt (as 2D dataset) accepted
+#### How to Read Data from a File
+
+**Write data** to any given file:
+```typescript
+import { Treasurer } from 'treasurer';
+
+//... prepare a header and data, e.g.
+let header = ['id', 'name', 'date of birth', 'nation', 'rat pack member'];
+let data = [
+            [1, 'Frank Sinatra', '12-12-1915', 'US', true],
+            [2, 'Dean Martin', '07-07-1917', 'US', true],
+            [3, 'Sammy Davis Jr.', '12-08-1925', 'US', true],
+            [4, 'Freddie Prinze Jr.', '03-08-1976', 'US', false],
+            //...
+            ];
+
+Treasurer
+  .fileWriter()
+  .setHeader(header)  // 1D Array of Strings and/or Numbers
+  .setData(data)      // 2D Array of Strings, Numbers and/or Boolean
+  .writeTo('./path/to/file.csv'); // csv, json or txt accepted
+```
+
+**Read data** from files and always receive the data in the same structure format:
+```typescript
+import { Treasurer } from 'treasurer';
+
+let content = Treasurer
+                .fileReader()
+                .readFrom('./path/to/file.csv');
+// currently csv, json or txt (as 2D dataset) accepted
 
 console.log(content.header);
   // --> 1D Array of Strings and/or Numbers
+  // ['id', 'name', 'date of birth', 'nation', 'rat pack member']
 console.log(content.data);
   // --> 2D Array of Strings, Numbers and/or Boolean
-```
-
-**Write data** to any given file:
-```javascript
-// import/require Treasurer
-
-//... prepare a header and data
-
-Treasurer.
-  .fileWriter()
-  .setHeader(header)  // 1D Array of Strings and/or Numbers
-  .setData(data)      // 2D Array of Strings and/or Numbers
-  .writeTo('./path/to/file.csv'); // csv, json or txt accepted
+  // [
+  //  [1, 'Frank Sinatra', '12-12-1915', 'US', true],
+  //  [2, 'Dean Martin', '07-07-1917', 'US', true],
+  //  [3, 'Sammy Davis Jr.', '12-08-1925', 'US', true],
+  //  [4, 'Freddie Prinze Jr.', '03-08-1976', 'US', false],
+  //  ...
+  // ];
 ```
 
 # API-Description
@@ -55,32 +82,42 @@ In case of false usage each method throws an Error containing a hint to the usag
 
 ## Read
 
-#### Method: `fileReader(): Function`
-* Entry point for the File Reader Functionality.
+#### `fileReader(opts: object): Function`
+* Entry point and Configuration-Injection for the File Reader Facility.
+  * `fileSystem?: object|string|null` - set Filesystem related options
+    * `encoding: string|null` - Default: 'utf8' (differing from NodeJS Default)
+    * `flag: string` - Default: 'r'
 
-#### Method: `readFrom(path: String): Object`
-- `path`: String containing the path to the file; e.g.:
-  - relative Posix Path: `path/to/file.json`
-  - absolute Posix Path: `/path/to/file.csv`
-  - relative Windows Path: `path\\to\\file.json` (not yet tested)
-  - absolute Windows Path: `C:\\path\\to\\file.csv` (not yet tested)
-- returns an `Object` containing:
-  - `header`: 1D-Array of mixed values.
-  - `data`: 2D-Array of corresponding data mixed values.
-- throws a message if input doesn't meet the expected scope
+
+#### `readFrom(path: string): Object`
+* Accepts an OS-independent path value and reads the content from that file.
+* `path`: Path containing the path to the file; independent of the Operating System; e.g.:
+  * relative Posix Path: `path/to/file.json`
+  * absolute Posix Path: `/path/to/file.csv`
+  * relative Windows Path: `path\\to\\file.json`
+  * absolute Windows Path: `C:\\path\\to\\file.csv`
+* returns an `Object` containing following structure:
+  * `header: Array<string|number>` - 1D-Array of mixed values.
+  * `data: Array<Array<string|number|boolean>>` - 2D-Array of corresponding data mixed values.
+* throws a message if input doesn't meet the expected scope
 
 ## Write
 
-#### Method: `fileWriter(): Function`
-* Entry point for the File Writer Functionality.
+#### `fileWriter(optis: object): Function`
+* Entry point and Configuration-Injection for the File Writer Facility.
+  * `sync?: boolean` - synchronous writing. [Default: `false`]
+  * `fileSystem?: object|string|null` - set Filesystem related options
+    * `encoding: string|null` - Default: 'utf8'
+    * `mode: number|string` - Default: 0o666
+    * `flag: string` - Default: 'w'
 
-#### Method: `setHeader(header[]: Array<String>): Function`
+#### `setHeader(header: Array<string|number>): Function`
 - `header`: 1D-Array of Column Names
   - Valid data types: Strings and Numbers
 - returns `setData: Function`
 - throws a message if input doesn't meet the expected scope
 
-#### Method: `setData(data[][]: Array): Function`
+#### `setData(data: Array<Array<string|number|boolean>>): Function`
 - `data`: 2D-Array of mixed values
   - each row represents one data set
   - Valid data types:
@@ -92,23 +129,20 @@ In case of false usage each method throws an Error containing a hint to the usag
 - throws a message if
   - input doesn't meet the expected scope, e.g. nested structures like `Objects`, `Arrays`
 
-#### Method: `writeTo(path: String): void`
-- `path`: String containing the path to the output-file; e.g.:
-  - relative Posix Path: `path/to/file.json`
-  - absolute Posix Path: `/path/to/file.csv`
-  - relative Windows Path: `path\\to\\file.json` (not yet tested)
-  - absolute Windows Path: `C:\\path\\to\\file.csv` (not yet tested)
-- sets the path and writes the data to the output-file
-  - for the sake of usability, this methods violates the Single Responsibility Principle
-- throws a message if
-  - input doesn't meet the expected scope or
-  - if the writing process was aborted.
+#### `writeTo(path: string): void`
+* Accepts an OS-independent path value and writes the data to the output-file.
+* `path`: analogue to `readFrom()`
+* throws a message if
+  * input doesn't meet the expected scope or
+  * if the writing process was aborted.
 
-# Scope Definition
+## Scope Definition
+
 This project is meant to be *lightweight*, *easy to use* and limited to the initial scope of:
 * reading and persisting 2D-DataSets in any common format.
 
-# Current Limitations
+## Current Limitations
+
 This framework supports basic tasks for basic use cases. The following limitations are known and intended to be taken care of in future releases:
 * no concurrency (async execution)
 * no fancy filesystem control
@@ -117,7 +151,7 @@ This framework supports basic tasks for basic use cases. The following limitatio
 
 # Community Contribution
 
-> Everybody is more than welcome to contribute!
+> Everybody is more than welcome to contribute and extend the functionality!
 
 Please feel free to contribute to this project as much as you wish to. Before triggering a pull-request, please make sure that you've run all the tests via the *testing command*:
 
