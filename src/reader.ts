@@ -21,7 +21,7 @@ export class FileReader {
    * @returns {File} dataSet-Object containing the header and the corresponding data.
    * @throws {Error} if input doesn't meet the accepted scope or if the writing process was aborted.
    */
-  public readFrom(filePath): File | Promise<File> {
+  public readFrom(filePath): File {
     if (!FileValidator.isValidPath(filePath)) { throw Error('readFrom: Please provide a valid path.'); }
     this.preparePathConfig(filePath);
     try {

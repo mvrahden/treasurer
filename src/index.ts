@@ -3,7 +3,6 @@ import { FileReader } from "./reader";
 import { WriterOpts } from "./utils/writer-opts";
 import { ReaderOpts } from "./utils/reader-opts";
 
-
 export class Treasurer {
 
   /**
@@ -23,5 +22,4 @@ export class Treasurer {
   public static fileReader(opts?: ReaderOpts): FileReader {
     return new FileReader(opts);
   }
-
 }
