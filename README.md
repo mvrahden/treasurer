@@ -1,7 +1,7 @@
 # Treasurer
 [![Build Status](https://travis-ci.com/mvrahden/treasurer.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasurer) ![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg) [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
-> A dependency-free tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.txt.
+> A dependency-free tool to read and write 2-dimensional data to common file formats, e.g. *.json or *.csv.
 
 ## For Production Use
 
@@ -46,8 +46,11 @@ let data = [
             //...
             ];
 
+//... optionally: prepare the options
+const config = { sync: false, filesystem: { encoding: 'utf8' } };
+
 Treasurer
-  .fileWriter()
+  .fileWriter(config)   // configures the writing facilities
   .setHeader(header)  // 1D Array of Strings and/or Numbers
   .setData(data)      // 2D Array of Strings, Numbers and/or Boolean
   .writeTo('./path/to/file.csv'); // csv, json or txt accepted
@@ -57,14 +60,18 @@ Treasurer
 ```typescript
 import { Treasurer } from 'treasurer';
 
+//... optionally: prepare the options
+const config = { filesystem: { encoding: 'utf8' } };
+
 let content = Treasurer
-                .fileReader()
+                .fileReader(config)
                 .readFrom('./path/to/file.csv');
 // currently csv, json or txt (as 2D dataset) accepted
 
 console.log(content.header);
   // --> 1D Array of Strings and/or Numbers
   // ['id', 'name', 'date of birth', 'nation', 'rat pack member']
+
 console.log(content.data);
   // --> 2D Array of Strings, Numbers and/or Boolean
   // [
@@ -82,7 +89,7 @@ In case of false usage each method throws an Error containing a hint to the usag
 
 ## Read
 
-#### `fileReader(opts: object): Function`
+#### `fileReader(options: object): Function`
 * Entry point and Configuration-Injection for the File Reader Facility.
   * `fileSystem?: object|string|null` - set Filesystem related options
     * `encoding: string|null` - Default: 'utf8' (differing from NodeJS Default)
@@ -103,7 +110,7 @@ In case of false usage each method throws an Error containing a hint to the usag
 
 ## Write
 
-#### `fileWriter(optis: object): Function`
+#### `fileWriter(options: object): Function`
 * Entry point and Configuration-Injection for the File Writer Facility.
   * `sync?: boolean` - synchronous writing. [Default: `false`]
   * `fileSystem?: object|string|null` - set Filesystem related options
@@ -140,14 +147,6 @@ In case of false usage each method throws an Error containing a hint to the usag
 
 This project is meant to be *lightweight*, *easy to use* and limited to the initial scope of:
 * reading and persisting 2D-DataSets in any common format.
-
-## Current Limitations
-
-This framework supports basic tasks for basic use cases. The following limitations are known and intended to be taken care of in future releases:
-* no concurrency (async execution)
-* no fancy filesystem control
-* no convenience methods or option injection
-* no testing for Windows OS
 
 # Community Contribution
 
