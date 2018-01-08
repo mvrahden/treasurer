@@ -1,18 +1,17 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { promisify } from 'util';
 import { ParsedPath } from 'path';
 
-import { FileValidator } from "./utils/file-validator";
-import { File } from './utils/file';
-import { WriterOpts } from './utils/writer-opts';
+import { WriterConfig, DataSet, DatasetValidator } from "./utilities";
 
 export class FileWriter {
-  private options: WriterOpts;
-  private content: File;
+  private _options: WriterConfig;
+  private _dataset: DataSet;
 
-  constructor(options?: WriterOpts) {
-    this.options = options ? options : { sync: false, fileSystem: { encoding: 'utf8' } };
-    this.content = { header: null, data: null };
+  constructor(options?: WriterConfig) {
+    this._options = options ? options : { sync: false, fileSystem: { encoding: 'utf8' } };
+    this._dataset = { header: null, data: null };
   }
 
   /**
@@ -22,20 +21,20 @@ export class FileWriter {
    * @throws {Error} if input doesn't meet the accepted scope.
    */
   public setHeader(header: Array<string | number>): DataSetter {
-    if (!FileValidator.isValidHeader(header)) { throw Error('setHeader: Accepts only 1-d Arrays with valid Strings and Numbers.'); }
-    this.content.header = header;
-    return new DataSetter(this.options, this.content);
+    if (!DatasetValidator.isValidHeader(header)) { throw Error('setHeader: Accepts only 1-d Arrays with valid Strings and Numbers.'); }
+    this._dataset.header = header;
+    return new DataSetter(this._options, this._dataset);
   }
 
 }
 
 export class DataSetter {
-  private options: WriterOpts;
-  private content: File;
+  private _options: WriterConfig;
+  private _dataset: DataSet;
 
-  constructor(options: WriterOpts, content: File) {
-    this.options = options;
-    this.content = content;
+  constructor(options: WriterConfig, content: DataSet) {
+    this._options = options;
+    this._dataset = content;
   }
 
   /**
@@ -47,87 +46,103 @@ export class DataSetter {
    * @throws {Error} if input doesn't meet the accepted scope.
    */
   public setData(data: Array<Array<any>>): PathSetter {
-    if (!FileValidator.isValidDataStructure(data)) { throw Error('setData: accepts only 2-d Arrays.'); }
-    data = FileValidator.cleanData(data);
-    if (!FileValidator.isValidData(data)) { throw Error('setData: accepts only 2-d Arrays with Strings, Numbers and/or Booleans.'); }
-    this.content.data = data;
-    return new PathSetter(this.options, this.content);
+    if (!DatasetValidator.isValidDataStructure(data)) { throw Error('setData: accepts only 2-d Arrays.'); }
+    data = DatasetValidator.cleanData(data);
+    if (!DatasetValidator.isValidData(data)) { throw Error('setData: accepts only 2-d Arrays with Strings, Numbers and/or Booleans.'); }
+    this._dataset.data = data;
+    return new PathSetter(this._options, this._dataset);
   }
 }
 
 export class PathSetter {
-  private options: WriterOpts;
-  private file: ParsedPath = null;
-  private content: File;
+  private _options: WriterConfig;
+  private _parsedPath: ParsedPath = null;
+  private _dataset: DataSet;
 
-  constructor(options: WriterOpts, content: File) {
-    this.options = options;
-    this.content = content;
+  constructor(options: WriterConfig, content: DataSet) {
+    this._options = options;
+    this._dataset = content;
   }
 
   /**
    * Captures the file path and writes the given content to the file.
    * @param {String} filePath - String representation of the file path.
-   * @returns {void}
+   * @param {(value?: (value?: void | PromiseLike<void>) => void} [resolve] - optional custom resolve function for async writing.
+   * @param {(reason?: any) => void} [reject] - optional custom reject function for async writing.
+   * @returns {void | Promise<void>} - returns a Promise on async call, otherwise it returns void.
    * @throws {Error} if input doesn't meet the accepted scope or if the writing process was aborted.
    */
-  public writeTo(filePath: string): void {
-    if (!FileValidator.isValidPath(filePath)) { throw Error('writeTo: Please provide a valid path.'); }
+  public writeTo(filePath: string, resolve?: (value?: void | PromiseLike<void>) => void, reject?: (reason?: any) => void): void | Promise<void> {
+    if (!DatasetValidator.isValidPath(filePath)) { throw Error('writeTo: Please provide a valid path.'); }
     filePath = path.normalize(filePath);
-    this.file = path.parse(filePath);
-    try {
-      this.write();
-    } catch (err) {
-      this.catchError(err);
-      throw err;
-    }
+    this._parsedPath = path.parse(filePath);
+    this.createNonexistingDirectories();
+    if (this._options.sync) {
+      try { this.writeSync(); }
+      catch (err) { this.catchError(err); }
+    } else { return this.writeAsync(resolve, reject); }
   }
 
   private catchError(err: any) {
-    if (/ENOENT/.test(err)) {
-      throw Error('writeTo: No such file or directory. (ENOENT)');
-    }
-    if (/EACCES/.test(err)) {
-      throw Error('writeTo: Permission denied. (EACCES)');
-    }
-    if (/ECANCELED/.test(err)) {
-      throw Error('writeTo: Operation canceled. (ECANCELED)');
-    }
+    if (/ENOENT/.test(err)) { throw new Error('writeTo: No such file or directory. (ENOENT)'); }
+    else if (/EACCES/.test(err)) { throw new Error('writeTo: Permission denied. (EACCES)'); }
+    else if (/ECANCELED/.test(err)) { throw new Error('writeTo: Operation canceled. (ECANCELED)'); }
+    else { throw err; }
   }
 
-  private write(): void {
-    const filePath = this.createFilePath();
-    const data = this.convertData(this.content.header, this.content.data, this.file.ext);
-    this.createNonexistingDirectories();
-    if (this.options.sync) { fs.writeFileSync(filePath, data, this.options.fileSystem); }
-    else {
-      const self = this;
-      fs.writeFile(filePath, data, this.options.fileSystem, (err) => {
-        self.catchError(err);
+  private writeSync(): void {
+    const { filePath, data } = this.getWritingData();
+    fs.writeFileSync(filePath, data, this._options.fileSystem);
+  }
+
+  private writeAsync(resolve: (value?: void | PromiseLike<void>) => void, reject: (reason?: any) => void): Promise<void> {
+    const { filePath, data } = this.getWritingData();
+    const self = this;
+    const writeFile = promisify(fs.writeFile);
+    return writeFile(filePath, data, this._options.fileSystem)
+      .then((value) => {
+        resolve(value);
+      })
+      .catch((err) => {
+        if (reject) {
+          try {
+            self.catchError(err);
+          } catch (err) {
+            reject(err);
+          }
+        } else {
+          self.catchError(err);
+        }
       });
-    }
   }
 
-  private createFilePath(): string {
-    if (this.file.dir === '') { return '.' + path.sep + this.file.base; }
-    else { return this.file.dir + path.sep + this.file.base; }
+  private getWritingData(): { filePath, data } {
+    const filePath = this.createFilePathString();
+    const data = this.convertData();
+    return { filePath, data };
   }
 
-  private convertData(header: any[], data: any[], ext: string): string {
-    if (ext === '.csv') { return this.convertToCSV(header, data); }
-    else if (ext === '.txt') { return this.convertToTXT(header, data); }
+  private createFilePathString(): string {
+    if (this._parsedPath.dir === '') { return '.' + path.sep + this._parsedPath.base; }
+    else { return this._parsedPath.dir + path.sep + this._parsedPath.base; }
+  }
+
+  private convertData(): string {
+    if (this._parsedPath.ext === '.csv') { return this.convertToXSV(','); }
+    else if (this._parsedPath.ext === '.tsv') { return this.convertToXSV('\t'); }
+    else if (this._parsedPath.ext === '.txt') { return this.convertToTXT(); }
     else {
-      return JSON.stringify({ 'header': header, 'data': data }, (key, value) => {
+      return JSON.stringify({ 'header': this._dataset.header, 'data': this._dataset.data }, (key, value) => {
         if (Number.isNaN(value)) { return 'NaN'; }
         return value;
       });
     }
   }
 
-  private convertToCSV(header: any[], data: any[]): string {
-    let outputString = header.join(',') + '\n';
-    data.forEach((row) => {
-      outputString += row.map(this.stringValueDelimitation).join(',') + '\n';
+  private convertToXSV(delimiter: string = ','): string {
+    let outputString = this._dataset.header.join(delimiter) + '\n';
+    this._dataset.data.forEach((row: Array<number | string | boolean>) => {
+      outputString += row.map(this.stringValueDelimitation).join(delimiter) + '\n';
     });
     return outputString;
   }
@@ -143,20 +158,20 @@ export class PathSetter {
     return value;
   }
 
-  private convertToTXT(header: any[], data: any[]): string {
-    return this.convertToCSV(header, data);
+  private convertToTXT(): string {
+    return this.convertToXSV(',');
   }
 
   private createNonexistingDirectories(): void {
-    this.file.dir.split(path.sep).reduce((dir, segment) => {
-      this.createUnexisting(dir);
+    this._parsedPath.dir.split(path.sep).reduce((dir, segment) => {
+      this.createNonExistingDirectory(dir);
       dir = dir + path.sep + segment;
-      this.createUnexisting(dir);
+      this.createNonExistingDirectory(dir);
       return dir;
     });
   }
 
-  private createUnexisting(dir: string): void {
+  private createNonExistingDirectory(dir: string): void {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }

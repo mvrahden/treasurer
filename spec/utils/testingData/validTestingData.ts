@@ -1,4 +1,4 @@
-import { File } from "../../../dist/utils/file";
+import { DataSet } from '../../../dist/index';
 
 export class Valid {
   public static headers = [
@@ -13,7 +13,7 @@ export class Valid {
     'test/test.csv',
     'test/test.txt'
   ];
-  public static fileContents: Array<File> = [
+  public static fileContents: Array<DataSet> = [
     {
       header: ['Col1', 'Col2', 'Col3', 'Col4'],
       data: [

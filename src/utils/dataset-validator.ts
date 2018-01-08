@@ -1,6 +1,6 @@
-import { ExtensionUtil } from "./extension-util";
+import { ExtensionValidator } from '../utilities';
 
-export class FileValidator {
+export class DatasetValidator {
   /**
    * Validates the elements of a 1D Array of mixed values.
    * Accepts only Strings and/or Numbers.
@@ -13,7 +13,7 @@ export class FileValidator {
     if (!(header instanceof Array)) { return false; }
     if (header.length === 0) { return false; }
     for (let i = 0; i < header.length; i++) {
-      if (!FileValidator.isValidHeaderElement(header[i])) { return false; }
+      if (!DatasetValidator.isValidHeaderElement(header[i])) { return false; }
     }
     return true;
   };
@@ -29,20 +29,20 @@ export class FileValidator {
    * @returns {boolean} State of Validation.
    */
   public static isValidData(dataSet) {
-    if (!FileValidator.containsValidRows(dataSet)) { return false; }
+    if (!DatasetValidator.containsValidRows(dataSet)) { return false; }
     return true;
   }
 
   private static containsValidRows(dataSet) {
     for (let i = 0; i < dataSet.length; i++) {
-      if (!FileValidator.containsValidElements(dataSet[i])) { return false; }
+      if (!DatasetValidator.containsValidElements(dataSet[i])) { return false; }
     }
     return true;
   }
 
   private static containsValidElements(row) {
     for (let i = 0; i < row.length; i++) {
-      if (!FileValidator.isValidDataElement(row[i])) { return false; }
+      if (!DatasetValidator.isValidDataElement(row[i])) { return false; }
     }
     return true;
   }
@@ -61,12 +61,12 @@ export class FileValidator {
     if (path === undefined) { return false; }
     if (path === null) { return false; }
     if (!(typeof path === 'string')) { return false; }
-    if (!FileValidator.includesExtension(path)) { return false; }
+    if (!DatasetValidator.includesExtension(path)) { return false; }
     return true;
   }
 
   private static includesExtension (path) {
-    return ExtensionUtil.getExtension(path) !== 'invalid';
+    return ExtensionValidator.getExtension(path) !== 'invalid';
   }
 
   /**
@@ -77,8 +77,8 @@ export class FileValidator {
    * @returns {boolean} State of Validation.
    */
   public static isValidDataStructure (dataSet) {
-    if (!FileValidator.isValidArray(dataSet)) { return false; }
-    if (!FileValidator.areValidRows(dataSet)) { return false; }
+    if (!DatasetValidator.isValidArray(dataSet)) { return false; }
+    if (!DatasetValidator.areValidRows(dataSet)) { return false; }
     return true;
   }
 
@@ -92,7 +92,7 @@ export class FileValidator {
 
   private static areValidRows (dataSet) {
     for (let i = 0; i < dataSet.length; i++) {
-      if (!FileValidator.isValidArray(dataSet[i])) { return false; }
+      if (!DatasetValidator.isValidArray(dataSet[i])) { return false; }
     }
     return true;
   }
@@ -105,7 +105,7 @@ export class FileValidator {
   public static cleanData (dataSet: any[][]): any[][] {
     const cleanedDataSet = [];
     dataSet.forEach((row) => {
-      const cleanedRow = FileValidator.cleanRow(row);
+      const cleanedRow = DatasetValidator.cleanRow(row);
       cleanedDataSet.push(cleanedRow);
     });
     return cleanedDataSet;
@@ -114,7 +114,7 @@ export class FileValidator {
   private static cleanRow (row: any[]): any[] {
     const cleanedRow = [];
     row.forEach((element) => {
-      element = FileValidator.cleanElement(element);
+      element = DatasetValidator.cleanElement(element);
       cleanedRow.push(element);
     });
     return cleanedRow;

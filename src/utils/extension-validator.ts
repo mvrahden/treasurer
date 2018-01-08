@@ -1,6 +1,6 @@
-const extensionMatcher = /\.(txt|csv|json)$/;
+const extensionMatcher = /\.(txt|csv|tsv|json)$/;
 
-export class ExtensionUtil {
+export class ExtensionValidator {
   public static getExtension(path) {
     const extensionMatches = extensionMatcher.exec(path);
     if (extensionMatches === null || extensionMatches.length === 0) {

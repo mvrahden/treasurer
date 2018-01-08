@@ -1,4 +1,4 @@
-import { FileValidator } from "../../dist/utils/file-validator";
+import { DatasetValidator } from '../../dist/utilities';
 
 const uncleanDataSets = [
   [['valid', undefined]],
@@ -11,15 +11,15 @@ describe('Data cleaning', () => {
   it('should transform undefined and null to empty String \'\'', () => {
     uncleanDataSets.forEach((uncleanDataSet) => {
       expect((() => {
-        const cleanDataSet = FileValidator.cleanData(uncleanDataSet);
-        return FileValidator.isValidData(cleanDataSet);
+        const cleanDataSet = DatasetValidator.cleanData(uncleanDataSet);
+        return DatasetValidator.isValidData(cleanDataSet);
       })()).toBe(true);
     });
   });
 
   it('should transform undefined and null to empty String \'\'', () => {
     uncleanDataSets.forEach((uncleanDataSet) => {
-      expect(FileValidator.cleanData(uncleanDataSet)).toBeTruthy(cleanDataSet);
+      expect(DatasetValidator.cleanData(uncleanDataSet)).toBeTruthy(cleanDataSet);
     });
   });
 });
