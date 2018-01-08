@@ -55,7 +55,7 @@ Treasurer
   .fileWriter(config)   // configures the writing facilities
   .setHeader(header)  // 1D Array of Strings and/or Numbers
   .setData(data)      // 2D Array of Strings, Numbers and/or Boolean
-  .writeTo('./path/to/file.csv'); // csv, json or txt accepted
+  .writeTo('./path/to/file.csv'); // csv, tsv, json or txt accepted
 ```
 
 **Read data** from files and always receive the data in the same structure format:
@@ -67,8 +67,7 @@ const config = { sync: true, fileSystem: { encoding: 'utf8' } };
 
 let dataset = Treasurer
                 .fileReader(config)
-                .readFrom('./path/to/file.csv');
-// currently csv, json or txt (as 2D dataset) accepted
+                .readFrom('./path/to/file.csv'); // csv, tsv, json or txt accepted
 
 console.log(dataset.header);
   // --> 1D Array of Strings and/or Numbers
