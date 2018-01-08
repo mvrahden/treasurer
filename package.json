@@ -1,6 +1,6 @@
 {
   "name": "treasurer",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Read and write 2D-datasets in form of *.json or *.csv.",
   "main": "dist/index.js",
   "typings": "dist/index",
