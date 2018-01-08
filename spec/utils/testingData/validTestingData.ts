@@ -8,6 +8,7 @@ export class Valid {
   public static paths: Array<string> = [
     './test/subdir/subsubdir/test.json',
     './test/subdir/subsubdir/test.csv',
+    './test/subdir/subsubdir/test.tsv',
     './test/subdir/subsubdir/test.txt',
     'test/test.json',
     'test/test.csv',
@@ -33,14 +34,16 @@ export class Valid {
       ]
     }
   ];
-  public static extensions: Array<string> = [
-    './test.json',
-    './utils/test.json',
-    './utils/test.csv',
-    './utils/test.csv.csv',
-    './utils/test.json.csv',
-    './utils/test.csv.json',
-    './utils/test.csv.txt'
+  public static extensions: Array<{actual: string, expected: string}> = [
+    { actual: './test.json', expected: 'json'},
+    { actual: './utils/test.json', expected: 'json'},
+    { actual: './utils/test.csv', expected: 'csv'},
+    { actual: './utils/test.csv.tsv', expected: 'tsv'},
+    { actual: './utils/test.csv.csv', expected: 'csv'},
+    { actual: './utils/test.tsv.csv', expected: 'csv'},
+    { actual: './utils/test.json.csv', expected: 'csv'},
+    { actual: './utils/test.csv.json', expected: 'json'},
+    { actual: './utils/test.csv.txt', expected: 'txt'},
   ];
   public static dataStructures: Array<Array<Array<string | number | boolean | [0] | {}>>> = [
     [['value', 'value']],

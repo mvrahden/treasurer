@@ -16,9 +16,9 @@ describe('Path validation', () => {
     });
   });
 
-  it('does accept path declared valid extensions.', () => {
-    Valid.extensions.forEach((path: string) => {
-      expect(DatasetValidator.isValidPath(path)).toBe(true);
+  it('does accept path with declared valid extensions.', () => {
+    Valid.extensions.forEach((testCase) => {
+      expect(DatasetValidator.isValidPath(testCase.actual)).toBe(true);
     });
   });
 });

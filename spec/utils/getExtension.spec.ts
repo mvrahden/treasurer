@@ -11,12 +11,8 @@ describe('The Extension-Getter', () => {
   });
 
   it('does return the real valid extension.', () => {
-    expect(ExtensionValidator.getExtension(Valid.extensions[0])).toBe('json');
-    expect(ExtensionValidator.getExtension(Valid.extensions[1])).toBe('json');
-    expect(ExtensionValidator.getExtension(Valid.extensions[2])).toBe('csv');
-    expect(ExtensionValidator.getExtension(Valid.extensions[3])).toBe('csv');
-    expect(ExtensionValidator.getExtension(Valid.extensions[4])).toBe('csv');
-    expect(ExtensionValidator.getExtension(Valid.extensions[5])).toBe('json');
-    expect(ExtensionValidator.getExtension(Valid.extensions[6])).toBe('txt');
+    Valid.extensions.forEach((testCase) => {
+      expect(ExtensionValidator.getExtension(testCase.actual)).toBe(testCase.expected);
+    });
   });
 });
