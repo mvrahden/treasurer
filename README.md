@@ -91,7 +91,7 @@ In case of false usage each method throws an Error containing a hint to the usag
 
 ## Read
 
-In the following section is the API description for the reading facility. Have a look at the Code Examples for [async reading](examples/synced-reading.md) and [sync reading](examples/async-reading.md).
+In the following section is the API description for the reading facility. Have a look at the Code Examples for [async reading](examples/async-reading.md) and [sync reading](examples/synced-reading.md).
 
 #### `fileReader(options?: ReaderConfig): Function`
 * Entry point and configuration-injection for the file-reader facility.
@@ -118,7 +118,7 @@ In the following section is the API description for the reading facility. Have a
 
 ## Write
 
-In the following section is the API description for the writing facility. Have a look at the Code Examples for [async writing](example/async-writing.md) and [sync writing](example/synced-writing.md).
+In the following section is the API description for the writing facility. Have a look at the Code Examples for [async writing](examples/async-writing.md) and [sync writing](examples/synced-writing.md).
 
 #### `fileWriter(options?: WriterConfig): Function`
 * Entry point and configuration-injection for the file-writer facility.
@@ -145,8 +145,7 @@ In the following section is the API description for the writing facility. Have a
     * Numbers (`1`, `1.234`, `NaN`)
     * `undefined`, `null` are being translated to `''` (empty String)
 * returns `writeTo: Function`
-* throws an `Error` if
-  * input doesn't meet the expected scope, e.g. nested structures like `Objects`, `Arrays`
+* throws an `Error` if input doesn't meet the expected scope, e.g. nested structures like `Objects`, `Arrays`
 
 #### `writeTo(path: string, resolve?: (value?: void | PromiseLike<void>) => void, reject?: (reason?: any) => void): void | Promise<void>`
 * Accepts an OS-independent path value and writes the data to the output-file.
