@@ -9,13 +9,13 @@
   },
   "readme": "README.md",
   "scripts": {
-    "prepare": "npm run build",
-    "prebuild": "rimraf dist & rimraf spec.dist",
-    "build": "tsc -p .",
-    "prebuild:test": "npm run build",
-    "build:test": "tsc -p ./tsconfig.spec.json",
-    "pretest": "npm run build:test",
+    "prepare": "npm run test",
     "test": "./node_modules/.bin/jasmine",
+    "pretest": "npm run build:test",
+    "build:test": "tsc -p ./tsconfig.spec.json",
+    "prebuild:test": "npm run build",
+    "build": "tsc -p .",
+    "prebuild": "rimraf dist & rimraf spec.dist",
     "posttest": "rimraf spec.dist"
   },
   "repository": {
