@@ -1,7 +1,7 @@
 # Treasurer
 [![Build Status](https://travis-ci.com/mvrahden/treasurer.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasurer) ![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg) [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
-> A dependency-free tool to read and write 2-dimensional data to common file formats, e.g. *.json or *.csv.
+> A dependency-free tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.tsv.
 
 ## For Production Use
 
@@ -16,9 +16,11 @@ npm install --save treasurer
 
 ### How To use this Library in Production
 
-Currently exposed Classes:
+Currently exposed Classes and Interfaces:
 
-* **Treasurer** - Lightweight tool with File-Reading and -Writing Facilities for 2D-Datasets
+* **Treasurer** - Contains reading and writing facilities.
+* **DataSet** - Interface representing the dataset structure.
+* **ReaderConfig, WriterConfig** - Interfaces representing the Reading/Writing configuration structure.
 
 These classes can be imported from this `npm` module, e.g.:
 ```typescript
@@ -47,7 +49,7 @@ let data = [
             ];
 
 //... optionally: prepare the options
-const config = { sync: false, filesystem: { encoding: 'utf8' } };
+const config = { sync: true, filesystem: { encoding: 'utf8' } };
 
 Treasurer
   .fileWriter(config)   // configures the writing facilities
@@ -63,16 +65,16 @@ import { Treasurer } from 'treasurer';
 //... optionally: prepare the options
 const config = { filesystem: { encoding: 'utf8' } };
 
-let content = Treasurer
+let dataset = Treasurer
                 .fileReader(config)
                 .readFrom('./path/to/file.csv');
 // currently csv, json or txt (as 2D dataset) accepted
 
-console.log(content.header);
+console.log(dataset.header);
   // --> 1D Array of Strings and/or Numbers
   // ['id', 'name', 'date of birth', 'nation', 'rat pack member']
 
-console.log(content.data);
+console.log(dataset.data);
   // --> 2D Array of Strings, Numbers and/or Boolean
   // [
   //  [1, 'Frank Sinatra', '12-12-1915', 'US', true],
@@ -89,64 +91,77 @@ In case of false usage each method throws an Error containing a hint to the usag
 
 ## Read
 
-#### `fileReader(options: object): Function`
-* Entry point and Configuration-Injection for the File Reader Facility.
+In the following section is the API description for the reading facility. Have a look at the Code Examples for [async reading](examples/synced-reading.md) and [sync reading](examples/async-reading.md).
+
+#### `fileReader(options?: ReaderConfig): Function`
+* Entry point and configuration-injection for the file-reader facility.
+* `options?`: optional reader configuration. Structure as follows:
+  * `sync?: boolean` - synchronous reading. [Default: `false`]
   * `fileSystem?: object|string|null` - set Filesystem related options
-    * `encoding: string|null` - Default: 'utf8' (differing from NodeJS Default)
-    * `flag: string` - Default: 'r'
+    * `encoding?: string|null` - Default: `'utf8'` (differing from NodeJS Default)
+    * `flag?: string` - Default: `'r'`
+* returns `readFrom: Function`
 
-
-#### `readFrom(path: string): Object`
+#### `readFrom(path: string, resolve?: (value?: DataSet | PromiseLike<DataSet>) => void, reject?: (reason?: any) => void): DataSet | Promise<DataSet>`
 * Accepts an OS-independent path value and reads the content from that file.
-* `path`: Path containing the path to the file; independent of the Operating System; e.g.:
+* `path`: String containing the path to the file; independent of the Operating System; e.g.:
   * relative Posix Path: `path/to/file.json`
   * absolute Posix Path: `/path/to/file.csv`
   * relative Windows Path: `path\\to\\file.json`
   * absolute Windows Path: `C:\\path\\to\\file.csv`
-* returns an `Object` containing following structure:
+* `resolve?`: optional custom `resolve` function for ASYNC reading tasks
+* `reject?`: optional custom `reject` function for ASYNC reading tasks
+* returns `DataSet` in synchronous call and a `Promise<DataSet>` in async function calls. `DataSet` containing the following structure:
   * `header: Array<string|number>` - 1D-Array of mixed values.
   * `data: Array<Array<string|number|boolean>>` - 2D-Array of corresponding data mixed values.
-* throws a message if input doesn't meet the expected scope
+* throws an `Error` if input doesn't meet the expected scope.
 
 ## Write
 
-#### `fileWriter(options: object): Function`
-* Entry point and Configuration-Injection for the File Writer Facility.
+In the following section is the API description for the writing facility. Have a look at the Code Examples for [async writing](example/async-writing.md) and [sync writing](example/synced-writing.md).
+
+#### `fileWriter(options?: WriterConfig): Function`
+* Entry point and configuration-injection for the file-writer facility.
+* `options?: WriterConfig` - optional writer configuration. Structure as follows:
   * `sync?: boolean` - synchronous writing. [Default: `false`]
   * `fileSystem?: object|string|null` - set Filesystem related options
-    * `encoding: string|null` - Default: 'utf8'
-    * `mode: number|string` - Default: 0o666
-    * `flag: string` - Default: 'w'
+    * `encoding?: string|null` - Default: `'utf8'`
+    * `mode?: number|string` - Default: `0o666`
+    * `flag?: string` - Default: `'w'`
+* returns `setHeader: Function`
 
 #### `setHeader(header: Array<string|number>): Function`
-- `header`: 1D-Array of Column Names
-  - Valid data types: Strings and Numbers
-- returns `setData: Function`
-- throws a message if input doesn't meet the expected scope
+* `header`: 1D-Array of Column Names
+  * Valid data types: `string` and `number`
+* returns `setData: Function`
+* throws an `Error` if input doesn't meet the expected scope
 
 #### `setData(data: Array<Array<string|number|boolean>>): Function`
-- `data`: 2D-Array of mixed values
-  - each row represents one data set
-  - Valid data types:
-    - Booleans (`true`, `false`),
-    - Strings (`'abc'`, `''`) and
-    - Numbers (`1`, `1.234`, `NaN`)
-    - `undefined`, `null` are being translated to `''` (empty String)
-- returns `writeTo: Function` (represented by `writeTo`)
-- throws a message if
-  - input doesn't meet the expected scope, e.g. nested structures like `Objects`, `Arrays`
+* `data`: 2D-Array of mixed values
+  * each row represents one data set
+  * Valid data types:
+    * Booleans (`true`, `false`),
+    * Strings (`'abc'`, `''`) and
+    * Numbers (`1`, `1.234`, `NaN`)
+    * `undefined`, `null` are being translated to `''` (empty String)
+* returns `writeTo: Function`
+* throws an `Error` if
+  * input doesn't meet the expected scope, e.g. nested structures like `Objects`, `Arrays`
 
-#### `writeTo(path: string): void`
+#### `writeTo(path: string, resolve?: (value?: void | PromiseLike<void>) => void, reject?: (reason?: any) => void): void | Promise<void>`
 * Accepts an OS-independent path value and writes the data to the output-file.
 * `path`: analogue to `readFrom()`
-* throws a message if
+* `resolve?`: optional `resolve` function for ASYNC writing tasks
+* `reject?`: optional `reject` function for ASYNC writing tasks
+* returns `void` in synchronous call and `Promise<void>` in async function call.
+* throws an `Error` if
   * input doesn't meet the expected scope or
   * if the writing process was aborted.
 
 ## Scope Definition
 
 This project is meant to be *lightweight*, *easy to use* and limited to the initial scope of:
-* reading and persisting 2D-DataSets in any common format.
+* reading and persisting 2D data sets in any common format.
 
 # Community Contribution
 
