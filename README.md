@@ -48,8 +48,8 @@ let data = [
             //...
             ];
 
-//... optionally: prepare the options
-const config = { sync: true, filesystem: { encoding: 'utf8' } };
+//... optionally: prepare the configuration
+const config = { sync: true, fileSystem: { encoding: 'utf8' } };
 
 Treasurer
   .fileWriter(config)   // configures the writing facilities
@@ -62,8 +62,8 @@ Treasurer
 ```typescript
 import { Treasurer } from 'treasurer';
 
-//... optionally: prepare the options
-const config = { filesystem: { encoding: 'utf8' } };
+//... optionally: prepare the configuration
+const config = { sync: true, fileSystem: { encoding: 'utf8' } };
 
 let dataset = Treasurer
                 .fileReader(config)
