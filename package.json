@@ -10,6 +10,7 @@
   "readme": "README.md",
   "scripts": {
     "prepare": "npm run build",
+    "prebuild": "rimraf dist & rimraf spec.dist",
     "build": "tsc -p .",
     "prebuild:test": "npm run build",
     "build:test": "tsc -p ./tsconfig.spec.json",
@@ -50,7 +51,7 @@
   },
   "homepage": "https://github.com/mvrahden/treasurer#readme",
   "devDependencies": {
-    "@types/jasmine": "^2.8.2",
+    "@types/jasmine": "^2.8.3",
     "@types/lodash": "^4.14.92",
     "@types/node": "^8.5.1",
     "jasmine": "^2.6.0",
