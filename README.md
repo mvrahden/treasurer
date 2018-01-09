@@ -1,7 +1,7 @@
 # Treasurer
 [![Build Status](https://travis-ci.com/mvrahden/treasurer.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasurer) ![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg) [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
-> A dependency-free tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.tsv.
+> A lightweight tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.tsv.
 
 ## For Production Use
 
@@ -161,7 +161,11 @@ In the following section is the API description for the writing facility. Have a
 This project is meant to be *lightweight*, *easy to use* and limited to the initial scope of:
 * reading and persisting 2D data sets in any common format.
 
-# Community Contribution
+#### Dependencies
+
+* **util.promisify** - Polyfill for NodeJS Versions < 8.0
+
+## Community Contribution
 
 > Everybody is more than welcome to contribute and extend the functionality!
 
@@ -171,7 +175,7 @@ Please feel free to contribute to this project as much as you wish to. Before tr
 npm run test
 ```
 
-# Code of Conduct
+## Code of Conduct
 
 When you're coding, try to...
 
