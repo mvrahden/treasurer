@@ -34,8 +34,6 @@ For JavaScript usage `require` classes from this `npm` module as follows:
 let Treasurer = require('treasurer').Treasurer;
 ```
 
-#### How to Read Data from a File
-
 **Write data** to any given file:
 ```typescript
 import { Treasurer } from 'treasurer';
