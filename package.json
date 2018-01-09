@@ -18,6 +18,9 @@
     "prebuild": "rimraf dist & rimraf spec.dist",
     "posttest": "rimraf spec.dist"
   },
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mvrahden/treasurer.git"
