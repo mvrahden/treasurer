@@ -6,6 +6,7 @@ node_modules
 dist
 
 # Temporary testing outputs
+spec.dist
 test
 
 # Logs
