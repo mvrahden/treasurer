@@ -1,5 +1,5 @@
 # Treasurer
-[![Build Status](https://travis-ci.org/mvrahden/treasurer.svg?branch=master)](https://travis-ci.com/mvrahden/treasurer) [![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg)]() [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
+[![Build Status](https://travis-ci.org/mvrahden/treasurer.svg?branch=master)](https://travis-ci.org/mvrahden/treasurer) [![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg)]() [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
 > A lightweight tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.tsv.
 
