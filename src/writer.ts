@@ -93,12 +93,14 @@ export class PathSetter {
   }
 
   private writeSync(): void {
-    const { filePath, data } = this.getWritingData();
+    const filePath = this.createFilePathString();
+    const data = this.convertData();
     fs.writeFileSync(filePath, data, this._options.fileSystem);
   }
 
   private writeAsync(resolve: (value?: void | PromiseLike<void>) => void, reject: (reason?: any) => void): Promise<void> {
-    const { filePath, data } = this.getWritingData();
+    const filePath = this.createFilePathString();
+    const data = this.convertData();
     const self = this;
     const writeFile = promisify(fs.writeFile);
     return writeFile(filePath, data, this._options.fileSystem)
@@ -116,12 +118,6 @@ export class PathSetter {
           self.catchError(err);
         }
       });
-  }
-
-  private getWritingData(): { filePath, data } {
-    const filePath = this.createFilePathString();
-    const data = this.convertData();
-    return { filePath, data };
   }
 
   private createFilePathString(): string {
