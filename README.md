@@ -1,9 +1,11 @@
 # Treasurer
-[![Build Status](https://travis-ci.com/mvrahden/treasurer.svg?token=nMzrxR4ZGjjBxBvNfUdC&branch=master)](https://travis-ci.com/mvrahden/treasurer) ![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg) [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
+[![Build Status](https://travis-ci.org/mvrahden/treasurer.svg?branch=master)](https://travis-ci.com/mvrahden/treasurer) [![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg)]() [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
 > A lightweight tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.tsv.
 
 ## For Production Use
+
+**IMPORTANT**: As of Version 1.4.4 there is a downward compatibility fix for NodeJS Versions < 8.0 and extended CI-Testing for NodeJS Versions >=6.0.0.
 
 ### How to install as dependency
 
@@ -84,11 +86,11 @@ console.log(dataset.data);
   // ];
 ```
 
-# API-Description
+## API-Description
 
 In case of false usage each method throws an Error containing a hint to the usage-error.
 
-## Read
+### Read
 
 In the following section is the API description for the reading facility. Have a look at the Code Examples for [async reading](examples/async-reading.md) and [sync reading](examples/synced-reading.md).
 
@@ -115,7 +117,7 @@ In the following section is the API description for the reading facility. Have a
   * `data: Array<Array<string|number|boolean>>` - 2D-Array of corresponding data mixed values.
 * throws an `Error` if input doesn't meet the expected scope.
 
-## Write
+### Write
 
 In the following section is the API description for the writing facility. Have a look at the Code Examples for [async writing](examples/async-writing.md) and [sync writing](examples/synced-writing.md).
 
@@ -160,6 +162,10 @@ In the following section is the API description for the writing facility. Have a
 
 This project is meant to be *lightweight*, *easy to use* and limited to the initial scope of:
 * reading and persisting 2D data sets in any common format.
+
+#### Quality Measures
+
+This project is configured to run automatic tests via Travis CI. The project is explicitly tested against **NodeJS Versions > 6** on Linux and MacOS instances.
 
 #### Dependencies
 
