@@ -7,15 +7,7 @@ node_js:
   - 7
   - "6.10"
   - 6
-  - 5
-  - "5.12"
-  - "4.8"
-  - "iojs-v3.3"
-  - "iojs-v2.5"
-  - "iojs-v1.8"
-  - "0.12"
-  - "0.10"
-  - "0.8"
+
 before_install:
   - 'if [ "${TRAVIS_NODE_VERSION}" = "0.6" ]; then npm install -g npm@1.3 ; elif [ "${TRAVIS_NODE_VERSION}" != "0.9" ]; then case "$(npm --version)" in 1.*) npm install -g npm@1.4.28 ;; 2.*) npm install -g npm@2 ;; esac ; fi'
   - 'if [ "${TRAVIS_NODE_VERSION%${TRAVIS_NODE_VERSION#[0-9]}}" = "0" ] || [ "${TRAVIS_NODE_VERSION:0:4}" = "iojs" ]; then npm install -g npm@4.5 ; elif [ "${TRAVIS_NODE_VERSION}" != "0.6" ] && [ "${TRAVIS_NODE_VERSION}" != "0.9" ]; then npm install -g npm; fi'
@@ -176,11 +168,11 @@ matrix:
       env: TEST=true ALLOW_FAILURE=true
     - node_js: "0.4"
       env: TEST=true ALLOW_FAILURE=true
-  allow_failures:
-    - os: osx
-    - env: TEST=true ALLOW_FAILURE=true
-    - node_js: "0.10"
-    - node_js: "0.8"
+  # allow_failures:
+  #   - os: osx
+  #   - env: TEST=true ALLOW_FAILURE=true
+  #   - node_js: "0.10"
+  #   - node_js: "0.8"
 branches:
   only:
   - master
