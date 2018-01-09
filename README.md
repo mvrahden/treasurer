@@ -165,7 +165,7 @@ This project is meant to be *lightweight*, *easy to use* and limited to the init
 
 #### Quality Measures
 
-This project is configured to run automatic tests via Travis CI. The project is explicitly tested against **NodeJS Versions > 6** on Linux and MacOS instances.
+This project is configured to run automated tests via *Travis CI*. The project is explicitly tested against **NodeJS Versions > 6** on Linux and MacOS instances.
 
 #### Dependencies
 
