@@ -1,9 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import * as util from 'util';
-const promisify = util.promisify ? util.promisify : require('util.promisify');
+import { promisify } from 'util';
+// import * as util from 'util';
+// const promisify = util.promisify ? util.promisify : require('util.promisify');
 import { ParsedPath } from 'path';
-
 
 import { WriterConfig, DataSet, DatasetValidator } from "./utilities";
 
