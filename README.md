@@ -102,12 +102,10 @@ In the following section is the API description for the reading facility. Have a
 * returns `readFrom: Function`
 
 #### `readFrom(path: string, resolve?: (value?: DataSet | PromiseLike<DataSet>) => void, reject?: (reason?: any) => void): DataSet | Promise<DataSet>`
-* Accepts an OS-independent path value and reads the content from that file.
+<!-- * Accepts an OS-independent path value and reads the content from that file. -->
 * `path`: String containing the path to the file; independent of the Operating System; e.g.:
   * relative Posix Path: `path/to/file.json`
   * absolute Posix Path: `/path/to/file.csv`
-  * relative Windows Path: `path\\to\\file.json`
-  * absolute Windows Path: `C:\\path\\to\\file.csv`
 * `resolve?`: optional custom `resolve` function for ASYNC reading tasks
 * `reject?`: optional custom `reject` function for ASYNC reading tasks
 * returns `DataSet` in synchronous call and a `Promise<DataSet>` in async function calls. `DataSet` containing the following structure:
@@ -147,7 +145,7 @@ In the following section is the API description for the writing facility. Have a
 * throws an `Error` if input doesn't meet the expected scope, e.g. nested structures like `Objects`, `Arrays`
 
 #### `writeTo(path: string, resolve?: (value?: void | PromiseLike<void>) => void, reject?: (reason?: any) => void): void | Promise<void>`
-* Accepts an OS-independent path value and writes the data to the output-file.
+<!-- * Accepts an OS-independent path value and writes the data to the output-file. -->
 * `path`: analogue to `readFrom()`
 * `resolve?`: optional `resolve` function for ASYNC writing tasks
 * `reject?`: optional `reject` function for ASYNC writing tasks

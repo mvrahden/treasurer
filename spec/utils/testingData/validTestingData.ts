@@ -12,6 +12,7 @@ export class Valid {
     './test/subdir/subsubdir/test.txt',
     'test/test.json',
     'test/test.csv',
+    'test/test.tsv',
     'test/test.txt'
   ];
   public static fileContents: Array<DataSet> = [
