@@ -31,3 +31,6 @@
   - UNCERTAIN: asArrayOfRowObjects() # [ {col1: ..., col2: ...}, {col1: ..., col2: ...}, ... ]
   - UNCERTAIN: asArrayOfColumnArrays() # [ [...], [...], ... ]
   - UNCERTAIN: asArrayOfRowArrays() # [ [...], [...], ... ]
+
+## v1.4.8
+- investigate into Windows paths and their testing on posix systems to make paths OS-independent (delimiter exchange seems not to work at the moment)
