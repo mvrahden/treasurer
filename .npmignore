@@ -5,8 +5,12 @@ spec.dist
 # Source Files
 src
 
-# Todo File
+# Dependencies
+node_modules
+
+# Other Files
 TODO.md
+examples
 
 # Config Files
 .travis.yml

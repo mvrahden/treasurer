@@ -3,10 +3,12 @@
 
 # Dependency directories
 node_modules
+
+# Compiled outputs
 dist
+spec.dist
 
 # Temporary testing outputs
-spec.dist
 test
 
 # Logs
