@@ -6,14 +6,22 @@ export class Valid {
     ['validValue', 1.555]
   ];
   public static paths: Array<string> = [
-    './test/subdir/subsubdir/test.json',
-    './test/subdir/subsubdir/test.csv',
-    './test/subdir/subsubdir/test.tsv',
-    './test/subdir/subsubdir/test.txt',
-    'test/test.json',
-    'test/test.csv',
-    'test/test.tsv',
-    'test/test.txt'
+    './test/posix/subdir/subsubdir/test.json',
+    './test/posix/subdir/subsubdir/test.csv',
+    './test/posix/subdir/subsubdir/test.tsv',
+    './test/posix/subdir/subsubdir/test.txt',
+    '.\\test\\windows\\subdir\\subsubdir\\test.json',
+    '.\\test\\windows\\subdir\\subsubdir\\test.csv',
+    '.\\test\\windows\\subdir\\subsubdir\\test.tsv',
+    '.\\test\\windows\\subdir\\subsubdir\\test.txt',
+    'test/posix.json',
+    'test/posix.csv',
+    'test/posix.tsv',
+    'test/posix.txt',
+    'test\\windows.json',
+    'test\\windows.csv',
+    'test\\windows.tsv',
+    'test\\windows.txt'
   ];
   public static fileContents: Array<DataSet> = [
     {

@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import { ParsedPath } from 'path';
 import { promisify } from './polyfills/promisify';
@@ -38,8 +39,14 @@ export class FileReader {
   }
 
   private parseFilePath(filePath: string) {
+    filePath = FileReader.specifyPathDelimiterForOS(filePath);
     filePath = path.normalize(filePath);
     this._parsedPath = path.parse(filePath);
+  }
+
+  private static specifyPathDelimiterForOS(filePath: string): string {
+    if (/(Windows)/.test(os.type())) { return filePath.replace(/\//g, '\\'); }
+    else { return filePath.replace(/\\/g, '/'); }
   }
 
   private readSync(): DataSet {

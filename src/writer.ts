@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import { ParsedPath } from 'path';
 import { promisify } from './polyfills/promisify';
@@ -74,8 +75,7 @@ export class PathSetter {
    */
   public writeTo(filePath: string, resolve?: (value?: void | PromiseLike<void>) => void, reject?: (reason?: any) => void): void | Promise<void> {
     if (!DatasetValidator.isValidPath(filePath)) { throw Error('writeTo: Please provide a valid path.'); }
-    filePath = path.normalize(filePath);
-    this._parsedPath = path.parse(filePath);
+    this.parseFilePath(filePath);
     this.createNonexistingDirectories();
     if (this._options.sync) {
       try { this.writeSync(); }
@@ -83,7 +83,18 @@ export class PathSetter {
     } else { return this.writeAsync(resolve, reject); }
   }
 
-  private catchError(err: any) {
+  private parseFilePath(filePath: string): void {
+    filePath = PathSetter.specifyPathDelimiterForOS(filePath);
+    filePath = path.normalize(filePath);
+    this._parsedPath = path.parse(filePath);
+  }
+
+  private static specifyPathDelimiterForOS(filePath: string): string {
+    if (/(Windows)/.test(os.type())) { return filePath.replace(/\//g, '\\'); }
+    else { return filePath.replace(/\\/g, path.sep); }
+  }
+
+  private catchError(err: any): void {
     if (/ENOENT/.test(err)) { throw new Error('writeTo: No such file or directory. (ENOENT)'); }
     else if (/EACCES/.test(err)) { throw new Error('writeTo: Permission denied. (EACCES)'); }
     else if (/ECANCELED/.test(err)) { throw new Error('writeTo: Operation canceled. (ECANCELED)'); }
@@ -159,7 +170,7 @@ export class PathSetter {
   }
 
   private createNonexistingDirectories(): void {
-    this._parsedPath.dir.split(path.sep).reduce((dir, segment) => {
+    this._parsedPath.dir.split(path.sep).reduce((dir: string, segment: string) => {
       this.createNonExistingDirectory(dir);
       dir = dir + path.sep + segment;
       this.createNonExistingDirectory(dir);

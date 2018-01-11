@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as os from 'os';
 import * as child_process from 'child_process';
 const execSync = child_process.execSync;
 import * as _ from 'lodash';
@@ -8,11 +9,23 @@ import { Valid } from './utils/testingData/validTestingData';
 import { Treasurer, DataSet, ReaderConfig, WriterConfig } from '../dist/index';
 import { DatasetValidator } from '../dist/utilities';
 
-const cleanTestDirectory = () => {
+const cleanTestDirectory = (): void => {
   execSync('rm -rf ./test/');
 };
 
-const writeData = (content: DataSet, path: string) => {
+const specifyPathToOS = (path: string): string => {
+  if (/Windows/.test(os.type())) { return path.replace(/\//g, '\\'); }
+  else { return path.replace(/\\/g, '/'); }
+};
+
+
+const expectPathExists = (path: string): void => {
+  path = specifyPathToOS(path);
+  const pathExists = fs.existsSync(path);
+  expect(pathExists).toBe(true);
+};
+
+const writeDataSync = (content: DataSet, path: string): void => {
   Treasurer
     .fileWriter({ sync: true })
     .setHeader(content.header)
@@ -36,8 +49,7 @@ describe('Treasurer:', () => {
             .setHeader(content.header)
             .setData(content.data)
             .writeTo(path, () => {
-              const pathExists = fs.existsSync(path);
-              expect(pathExists).toBe(true);
+              expectPathExists(path);
             }));
         });
       });
@@ -58,7 +70,8 @@ describe('Treasurer:', () => {
               .setData(content.data)
               .writeTo(path);
           }).not.toThrowError();
-          expect(fs.existsSync(path)).toBe(true);
+
+          expectPathExists(path);
         });
       });
     });
@@ -72,14 +85,14 @@ describe('Treasurer:', () => {
     beforeEach(() => {
       const content = Valid.fileContents[0];
       Valid.paths.forEach((path: string) => {
-        writeData(content, path);
+        writeDataSync(content, path);
       });
     });
 
     it('should be able to read the files content.', () => {
       Valid.fileContents.forEach((content: DataSet) => {
         Valid.paths.forEach((path: string) => {
-          expect(fs.existsSync(path)).toBe(true);
+          expectPathExists(path);
           expect(() => {
             const config: ReaderConfig = { sync: true };
             Treasurer.fileReader(config).readFrom(path);
@@ -93,8 +106,8 @@ describe('Treasurer:', () => {
     it('should be able to synchronously reconstruct the (cleaned) data that was written by reading the files, e.g. Numbers formatted as Strings.', () => {
       Valid.fileContents.forEach((content: DataSet) => {
         Valid.paths.forEach((path: string) => {
-          writeData(content, path);
-          expect(fs.existsSync(path)).toBe(true);
+          writeDataSync(content, path);
+          expectPathExists(path);
           expect((() => {
             const res = Treasurer.fileReader({sync: true}).readFrom(path);
             content.data = DatasetValidator.cleanData(content.data);
@@ -111,7 +124,7 @@ describe('Treasurer:', () => {
        * reader Facility to be injected in ASYNC write-read-Chain
        */
       const reader = (path: string) => {
-        expect(fs.existsSync(path)).toBe(true);
+        expectPathExists(path);
         Treasurer.fileReader({ sync: false }).readFrom(path, (res: DataSet) => {
           const content = {header: null, data: null};
           content.data = DatasetValidator.cleanData(content.data);
