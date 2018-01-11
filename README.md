@@ -6,6 +6,7 @@
 ## For Production Use
 
 **IMPORTANT**: As of Version 1.4.4 there is a downward compatibility fix for NodeJS Versions < 8.0 and extended CI-Testing for NodeJS Versions >=6.0.0.
+**v. 1.4.8**: Introduce OS-independent paths.
 
 ### How to install as dependency
 
@@ -34,7 +35,9 @@ For JavaScript usage `require` classes from this `npm` module as follows:
 let Treasurer = require('treasurer').Treasurer;
 ```
 
-**Write data** to any given file:
+**Write data** synchronously given to any file:<br>
+(For async writing please check the [code example](examples/async-writing.md).)
+
 ```typescript
 import { Treasurer } from 'treasurer';
 
@@ -58,7 +61,9 @@ Treasurer
   .writeTo('./path/to/file.csv'); // csv, tsv, json or txt accepted
 ```
 
-**Read data** from files and always receive the data in the same structure format:
+**Read data** synchronously from files and always receive the data in the same structured format:<br>
+(For async reading please check the [code example](examples/async-reading.md).)
+
 ```typescript
 import { Treasurer } from 'treasurer';
 
@@ -102,10 +107,12 @@ In the following section is the API description for the reading facility. Have a
 * returns `readFrom: Function`
 
 #### `readFrom(path: string, resolve?: (value?: DataSet | PromiseLike<DataSet>) => void, reject?: (reason?: any) => void): DataSet | Promise<DataSet>`
-<!-- * Accepts an OS-independent path value and reads the content from that file. --> 
+* Accepts an **OS-independent** path value and reads the content from that file. 
 * `path`: String containing the path to the file; independent of the Operating System; e.g.:
-  * relative Posix Path: `path/to/file.json`
+  * relative Posix Path: `path/to/file.json` or `./path/to/file.json`
   * absolute Posix Path: `/path/to/file.csv`
+  * relative Windows Path: `path\to\file.json` or `.\path\to\file.json`
+  * absolute Windows Server-Path: `C:\path\to\file.csv` or `\\path\to\file.csv` (mind: escaping characters!)
 * `resolve?`: optional custom `resolve` function for ASYNC reading tasks
 * `reject?`: optional custom `reject` function for ASYNC reading tasks
 * returns `DataSet` in synchronous call and a `Promise<DataSet>` in async function calls. `DataSet` containing the following structure:
@@ -145,7 +152,8 @@ In the following section is the API description for the writing facility. Have a
 * throws an `Error` if input doesn't meet the expected scope, e.g. nested structures like `Objects`, `Arrays`
 
 #### `writeTo(path: string, resolve?: (value?: void | PromiseLike<void>) => void, reject?: (reason?: any) => void): void | Promise<void>`
-<!-- * Accepts an OS-independent path value and writes the data to the output-file. --> 
+* Accepts an **OS-independent** path value and writes the data to the output-file. 
+* Non-existing directories will auto-magically be created.
 * `path`: analogue to `readFrom()`
 * `resolve?`: optional `resolve` function for ASYNC writing tasks
 * `reject?`: optional `reject` function for ASYNC writing tasks
@@ -157,7 +165,11 @@ In the following section is the API description for the writing facility. Have a
 ## Scope Definition
 
 This project is meant to be *lightweight*, *easy to use* and limited to the initial scope of:
-* reading and persisting 2D data sets in any common format.
+* trouble-free reading and persisting 2D data sets in any common format.
+
+#### Limitations
+
+Treasurer is bound to the permissions of your operating system. It is always assuming that you have the specific permissions to read and write data or create directories and will throw an Error if you don't.
 
 #### Quality Measures
 
