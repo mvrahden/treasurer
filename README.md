@@ -5,7 +5,7 @@
 
 ## For Production Use
 
-**IMPORTANT**: As of Version 1.4.4 there is a downward compatibility fix for NodeJS Versions < 8.0 and extended CI-Testing for NodeJS Versions >=6.0.0.
+**IMPORTANT**: As of Version 1.4.4 there is a downward compatibility fix for NodeJS Versions < 8.0 and extended CI-Testing for NodeJS Versions >=6.0.0.<br>
 **v. 1.4.8**: Introduce OS-independent paths.
 
 ### How to install as dependency
