@@ -1,7 +1,7 @@
 import { Valid } from './testingData/validTestingData';
 import { Invalid } from './testingData/invalidTestingData';
 
-import { DatasetValidator } from '../../dist/utilities';
+import { DatasetValidator } from '../../../dist/utilities';
 
 
 describe('The validation of headers expects a 1D-Array of Strings or Numbers.', () => {

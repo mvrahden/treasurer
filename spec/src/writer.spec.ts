@@ -1,4 +1,4 @@
-import { FileWriter } from '../dist/writer';
+import { FileWriter } from '../../dist/writer';
 import { Valid } from './utils/testingData/validTestingData';
 import { Invalid } from './utils/testingData/invalidTestingData';
 

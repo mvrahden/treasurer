@@ -1,4 +1,4 @@
-import { DatasetValidator } from '../../dist/utilities';
+import { DatasetValidator } from '../../../dist/utilities';
 
 const uncleanDataSets = [
   [['valid', undefined]],

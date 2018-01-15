@@ -6,8 +6,8 @@ import * as _ from 'lodash';
 
 import { Valid } from './utils/testingData/validTestingData';
 
-import { Treasurer, DataSet, ReaderConfig, WriterConfig } from '../dist/index';
-import { DatasetValidator } from '../dist/utilities';
+import { Treasurer, DataSet, ReaderConfig, WriterConfig } from '../../dist/index';
+import { DatasetValidator } from '../../dist/utilities';
 
 const cleanTestDirectory = (): void => {
   execSync('rm -rf ./test/');

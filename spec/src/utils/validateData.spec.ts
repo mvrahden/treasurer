@@ -1,7 +1,7 @@
 import { Valid } from './testingData/validTestingData';
 import { Invalid } from './testingData/invalidTestingData';
 
-import { DatasetValidator } from '../../dist/utilities';
+import { DatasetValidator } from '../../../dist/utilities';
 
 describe('The validation of data elements', () => {
   it('does not accept undefined, null, empty or deeper/nested structures.', () => {

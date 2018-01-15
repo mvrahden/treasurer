@@ -1,4 +1,4 @@
-import { FileReader } from '../dist/reader';
+import { FileReader } from '../../dist/reader';
 import { Invalid } from './utils/testingData/invalidTestingData';
 
 describe('Reader', () => {

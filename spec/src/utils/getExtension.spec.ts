@@ -1,7 +1,7 @@
 import { Valid } from './testingData/validTestingData';
 import { Invalid } from './testingData/invalidTestingData';
 
-import { ExtensionValidator } from '../../dist/utilities';
+import { ExtensionValidator } from '../../../dist/utilities';
 
 describe('The Extension-Getter', () => {
   it('does not accept non-expected extensions.', () => {

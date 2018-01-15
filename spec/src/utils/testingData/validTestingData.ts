@@ -1,4 +1,4 @@
-import { DataSet } from '../../../dist/index';
+import { DataSet } from '../../../../dist/index';
 
 export class Valid {
   public static headers = [

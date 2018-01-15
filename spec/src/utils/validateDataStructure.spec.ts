@@ -1,7 +1,7 @@
 import { Valid } from './testingData/validTestingData';
 import { Invalid } from './testingData/invalidTestingData';
 
-import { DatasetValidator } from '../../dist/utilities';
+import { DatasetValidator } from '../../../dist/utilities';
 
 describe('A valid 2D-Array Data Structure', () => {
   it('should consist of exactly 2 Arrays.', () => {
