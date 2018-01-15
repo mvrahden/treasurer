@@ -15,8 +15,8 @@
     "build:test": "tsc -p ./tsconfig.spec.json",
     "prebuild:test": "npm run build",
     "build": "tsc -p .",
-    "prebuild": "rimraf dist & rimraf spec.dist",
-    "posttest": "rimraf spec.dist"
+    "prebuild": "rimraf dist & rimraf spec/dist",
+    "posttest": "rimraf spec/dist"
   },
   "engines": {
     "node": ">=6.0.0"
