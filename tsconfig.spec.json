@@ -3,8 +3,8 @@
   "compilerOptions": {
     "sourceMap": false,
     "declaration": false,
-    "rootDir": "./spec/",
-    "outDir": "./spec.dist/",
+    "rootDir": "./spec/src/",
+    "outDir": "./spec/dist/",
     "types": [
       "jasmine",
       "node"
