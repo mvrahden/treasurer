@@ -3,6 +3,18 @@
 
 > A lightweight tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.tsv.
 
+* [API-Description](#api-description)
+  * [Reader](#read)
+  * [Writer](#write)
+* Code-Examples
+  * [How to write?](#how-to-write) + More Examples: [Sync][sync-write] / [Async][async-write]
+  * [How to read?](#how-to-read) + More Examples: [Sync][sync-read] / [Async][async-read]
+
+[sync-write]: examples/synced-writing.md
+[async-write]: examples/async-writing.md
+[sync-read]: examples/synced-reading.md
+[async-read]: examples/async-reading.md
+
 ## For Production Use
 
 **IMPORTANT**: As of Version 1.4.4 there is a downward compatibility fix for NodeJS Versions < 8.0 and extended CI-Testing for NodeJS Versions >=6.0.0.<br>
@@ -35,14 +47,15 @@ For JavaScript usage `require` classes from this `npm` module as follows:
 let Treasurer = require('treasurer').Treasurer;
 ```
 
-**Write data** synchronously given to any file:<br>
-(For async writing please check the [code example](examples/async-writing.md).)
+
+**Write data** <a name="how-to-write"></a> synchronously given to any file:<br>
+(For async writing please check the [code example][async-write].)
 
 ```typescript
 import { Treasurer } from 'treasurer';
 
 //... prepare a header and data, e.g.
-let header = ['id', 'name', 'date of birth', 'nation', 'rat pack member'];
+let header = ['id', 'name', 'date of birth', 'nationality', 'rat pack member'];
 let data = [
             [1, 'Frank Sinatra', '12-12-1915', 'US', true],
             [2, 'Dean Martin', '07-07-1917', 'US', true],
@@ -61,8 +74,8 @@ Treasurer
   .writeTo('./path/to/file.csv'); // csv, tsv, json or txt accepted
 ```
 
-**Read data** synchronously from files and always receive the data in the same structured format:<br>
-(For async reading please check the [code example](examples/async-reading.md).)
+**Read data** <a name="how-to-read"></a> synchronously from files and always receive the data in the same structured format:<br>
+(For async reading please check the [code example][async-read].)
 
 ```typescript
 import { Treasurer } from 'treasurer';
@@ -76,7 +89,7 @@ let dataset = Treasurer
 
 console.log(dataset.header);
   // --> 1D Array of Strings and/or Numbers
-  // ['id', 'name', 'date of birth', 'nation', 'rat pack member']
+  // ['id', 'name', 'date of birth', 'nationality', 'rat pack member']
 
 console.log(dataset.data);
   // --> 2D Array of Strings, Numbers and/or Boolean
@@ -95,7 +108,7 @@ In case of false usage each method throws an Error containing a hint to the usag
 
 ### Read
 
-In the following section is the API description for the reading facility. Have a look at the Code Examples for [async reading](examples/async-reading.md) and [sync reading](examples/synced-reading.md).
+In the following section is the API description for the reading facility. Have a look at the Code Examples for [async reading][async-read] and [sync reading][sync-read].
 
 #### `fileReader(options?: ReaderConfig): Function`
 * Entry point and configuration-injection for the file-reader facility.
@@ -122,7 +135,7 @@ In the following section is the API description for the reading facility. Have a
 
 ### Write
 
-In the following section is the API description for the writing facility. Have a look at the Code Examples for [async writing](examples/async-writing.md) and [sync writing](examples/synced-writing.md).
+In the following section is the API description for the writing facility. Have a look at the Code Examples for [async writing][async-write] and [sync writing][sync-write].
 
 #### `fileWriter(options?: WriterConfig): Function`
 * Entry point and configuration-injection for the file-writer facility.
