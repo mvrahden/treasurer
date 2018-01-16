@@ -32,3 +32,6 @@
   - UNCERTAIN: asArrayOfColumnArrays() # [ [...], [...], ... ]
   - UNCERTAIN: asArrayOfRowArrays() # [ [...], [...], ... ]
   
+# v1.5 unwanted datatype handling (config)
+- config: unwanted Datatype handler
+- test: all Datatypes available datatypes (check: https://dorey.github.io/JavaScript-Equality-Table/)

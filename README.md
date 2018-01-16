@@ -1,5 +1,5 @@
 # Treasurer
-[![Build Status](https://travis-ci.org/mvrahden/treasurer.svg?branch=master)](https://travis-ci.org/mvrahden/treasurer) [![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg)]() [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
+[![Build Status](https://travis-ci.org/mvrahden/treasurer.svg?branch=master)](https://travis-ci.org/mvrahden/treasurer) [![Build status](https://ci.appveyor.com/api/projects/status/1gbi2lkll4d48cy6/branch/master?svg=true)](https://ci.appveyor.com/project/mvrahden/treasurer/branch/master) [![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg)]() [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
 > A lightweight tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.tsv.
 
@@ -186,7 +186,9 @@ Treasurer is bound to the permissions of your operating system. It is always ass
 
 #### Quality Measures
 
-This project is configured to run automated tests via *Travis CI*. The project is explicitly tested against **NodeJS Versions > 6** on Linux and MacOS instances.
+This project is configured to run automated tests via *Travis CI* (for Linux and MacOS) and *AppVeyor* (for Windows x86/x64).
+
+> The project is explicitly tested against **NodeJS Versions > 6.0.0**.
 
 #### Dependencies
 
@@ -194,7 +196,7 @@ This project is configured to run automated tests via *Travis CI*. The project i
 
 ## Community Contribution
 
-> Everybody is more than welcome to contribute and extend the functionality!
+Everybody is more than welcome to contribute and extend the functionality!
 
 Please feel free to contribute to this project as much as you wish to. Before triggering a pull-request, please make sure that you've run all the tests via the *testing command*:
 
