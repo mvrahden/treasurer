@@ -19,12 +19,25 @@ install:
 build: off
 cache: node_modules
 environment:
-  matrix:
-    - nodejs_version: "9.3.0"   # same results as 9.0, 9.1, 9.2
-    - nodejs_version: "8.9.4"   # same results as 8.7, 8.8, 8.9
-    - nodejs_version: "8.6.0"   # same results as 8.3, 8.4, 8.5
-    - nodejs_version: "8.2.1"   # same results as 8.0, 8.1, 8.2
-    - nodejs_version: "7.10.1"  # same results as 7.6, 7.7, 7.8, 7.9, 7.10
-    - nodejs_version: "7.5.0"   # same results as 7.1, 7.2, 7.3, 7.4
-    - nodejs_version: "6.12.3"  # same results as 6.5, 6.6, 6.7, 6.8, 6.9, 6.10, 6.11, 6.12
-    - nodejs_version: "6.4.0"   # same results as 6.0, 6.1, 6.2, 6.3
+# - my_var1: value1
+matrix:
+fast_finish: true
+  - nodejs_version: "9.3.0"   # same results as 9.0.x, 9.1.x, 9.2.x
+  # - nodejs_version: "8.9.4"   # same results as 8.7.x, 8.8.x, 8.9.x
+  - nodejs_version: "8.6.0"   # same results as 8.3.x, 8.4.x, 8.5.x
+  - nodejs_version: "8.2.1"   # same results as 8.0.x, 8.1.x, 8.2.x
+  - nodejs_version: "7.10.1"  # same results as 7.6.x, 7.7.x, 7.8.x, 7.9.x, 7.10.x
+  - nodejs_version: "7.5.0"   # same results as 7.1.x, 7.2.x, 7.3.x, 7.4.x
+  # - nodejs_version: "6.12.3"  # same results as 6.5.x, 6.6.x, 6.7.x, 6.8.x, 6.9.x, 6.10.x, 6.11.x, 6.12.x
+  - nodejs_version: "6.4.0"   # same results as 6.0.x, 6.1.x, 6.2.x, 6.3.x
+skip_commits:
+  files:
+    - docs/*
+    - examples/*
+    - .gitignore
+    - .npmignore
+    - .travis.yml
+    - LICENSE
+    - README.md
+    - TODO.md
+    - tslint*
