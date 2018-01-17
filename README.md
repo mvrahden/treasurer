@@ -7,8 +7,8 @@
   * [Reader](#read)
   * [Writer](#write)
 * Code-Examples
-  * [How to write?](#how-to-write) + More Examples: [Sync][sync-write] / [Async][async-write]
-  * [How to read?](#how-to-read) + More Examples: [Sync][sync-read] / [Async][async-read]
+  * [How to write data sets?](#how-to-write) + More Examples: [Sync][sync-write] / [Async][async-write]
+  * [How to read data sets?](#how-to-read) + More Examples: [Sync][sync-read] / [Async][async-read]
 
 [sync-write]: examples/synced-writing.md
 [async-write]: examples/async-writing.md
@@ -178,7 +178,7 @@ In the following section is the API description for the writing facility. Have a
 ## Scope Definition
 
 This project is meant to be *lightweight*, *easy to use* and limited to the initial scope of:
-* trouble-free reading and persisting 2D data sets in any common format.
+* trouble-free reading and persisting of 2D data sets in any common format.
 
 #### Limitations
 
