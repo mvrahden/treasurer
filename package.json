@@ -1,6 +1,6 @@
 {
   "name": "treasurer",
-  "version": "1.4.11",
+  "version": "1.4.12",
   "description": "Read and write 2d data sets in form of *.json, *.csv or *.tsv... e.g. time series such as historical stock prices.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
