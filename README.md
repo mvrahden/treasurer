@@ -107,8 +107,6 @@ console.log(dataset.data);
 
 ## API-Description
 
-In case of false usage each method throws an Error containing a hint to the usage-error.
-
 ### Read
 
 In the following section is the API description for the reading facility. Have a look at the Code Examples for [async reading][async-read] and [sync reading][sync-read].
@@ -177,6 +175,10 @@ In the following section is the API description for the writing facility. Have a
 * throws an `Error` if
   * input doesn't meet the expected scope or
   * if the writing process was aborted.
+
+### Error-handling
+
+Each method is able to throw an `Error` containing a hint in case of false usage.
 
 ## Scope Definition
 
