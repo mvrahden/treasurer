@@ -22,6 +22,7 @@ Version | Change
 **v. 1.4.4** | Downward compatibility fix for NodeJS Versions < 8.0 and<br>extended CI-Testing for NodeJS Versions >=6.0.0.
 **v. 1.4.8** | Introduce OS-independent paths.
 **v. 1.4.11** | Introduce Windows CI-Testing.
+**v. 1.4.15** | Refactoring; resolve-reject injection checks; async error handling
 
 ### How to install as dependency
 
