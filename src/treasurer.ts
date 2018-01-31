@@ -1,6 +1,7 @@
-import { FileWriter } from "./writer";
-import { FileReader } from "./reader";
-import { WriterConfig, ReaderConfig } from "./utilities";
+import { FileWriter } from './writer';
+import { FileReader } from './reader';
+import { WriterConfig, ReaderConfig } from './utilities';
+import { Reader } from './reader/reader';
 
 export class Treasurer {
 
@@ -10,7 +11,7 @@ export class Treasurer {
    * @returns file writing facility
    */
   public static fileWriter(options?: WriterConfig): FileWriter {
-    return new FileWriter(options);
+    return FileWriter.createWriter(options);
   }
 
   /**
@@ -18,7 +19,7 @@ export class Treasurer {
    * @param {WriterConfig} [options = {sync: false, {endoding: 'utf8'}}] contains several options.
    * @returns file reading facility
    */
-  public static fileReader(options?: ReaderConfig): FileReader {
-    return new FileReader(options);
+  public static fileReader(options?: ReaderConfig): Reader {
+    return FileReader.createReader(options);
   }
 }

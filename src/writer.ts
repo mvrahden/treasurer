@@ -3,14 +3,23 @@ import * as os from 'os';
 import * as path from 'path';
 import { ParsedPath } from 'path';
 import { promisify } from './polyfills/promisify';
+const writeFile = promisify(fs.writeFile);
 
 import { WriterConfig, DataSet, DatasetValidator } from "./utilities";
+import { Writer } from './writer/writer';
+import { SyncWriter } from './writer/sync.writer';
+import { AsyncWriter } from './writer/async.writer';
 
 export class FileWriter {
   private _options: WriterConfig;
   private _dataset: DataSet;
+  private _errors: Error[] = [];
 
-  constructor(options?: WriterConfig) {
+  public static createWriter(options?: WriterConfig): FileWriter {
+    return new FileWriter(options);
+  }
+
+  private constructor(options?: WriterConfig) {
     this._options = options ? options : { sync: false, fileSystem: { encoding: 'utf8' } };
     this._dataset = { header: null, data: null };
   }
@@ -22,9 +31,11 @@ export class FileWriter {
    * @throws {Error} if input doesn't meet the accepted scope.
    */
   public setHeader(header: Array<string | number>): DataSetter {
-    if (!DatasetValidator.isValidHeader(header)) { throw Error('setHeader: Accepts only 1-d Arrays with valid Strings and Numbers.'); }
+    if (!DatasetValidator.isValidHeader(header)) {
+      this._errors.push(new Error('setHeader: Accepts only 1-d Arrays with valid Strings and Numbers.'));
+    }
     this._dataset.header = header;
-    return new DataSetter(this._options, this._dataset);
+    return new DataSetter(this._options, this._dataset, this._errors);
   }
 
 }
@@ -32,10 +43,12 @@ export class FileWriter {
 export class DataSetter {
   private _options: WriterConfig;
   private _dataset: DataSet;
+  private _errors: Error[];
 
-  constructor(options: WriterConfig, content: DataSet) {
+  constructor(options: WriterConfig, content: DataSet, errors: Error[]) {
     this._options = options;
     this._dataset = content;
+    this._errors = errors;
   }
 
   /**
@@ -46,142 +59,24 @@ export class DataSetter {
    * @returns {Function} writeTo.
    * @throws {Error} if input doesn't meet the accepted scope.
    */
-  public setData(data: Array<Array<any>>): PathSetter {
-    if (!DatasetValidator.isValidDataStructure(data)) { throw Error('setData: accepts only 2-d Arrays.'); }
+  public setData(data: Array<Array<any>>): Writer {
+    if (!DatasetValidator.isValidDataStructure(data)) {
+      this._errors.push(new Error('setData: accepts only 2-d Arrays.'));
+    }
     data = DatasetValidator.cleanData(data);
-    if (!DatasetValidator.isValidData(data)) { throw Error('setData: accepts only 2-d Arrays with Strings, Numbers and/or Booleans.'); }
+    if (!DatasetValidator.isValidData(data)) {
+      this._errors.push(new Error('setData: accepts only 2-d Arrays with Strings, Numbers and/or Booleans.'));
+    }
     this._dataset.data = data;
-    return new PathSetter(this._options, this._dataset);
-  }
-}
 
-export class PathSetter {
-  private _options: WriterConfig;
-  private _parsedPath: ParsedPath = null;
-  private _dataset: DataSet;
-
-  constructor(options: WriterConfig, content: DataSet) {
-    this._options = options;
-    this._dataset = content;
+    return this.createWriter()
   }
 
-  /**
-   * Captures the file path and writes the given content to the file.
-   * @param {String} filePath - String representation of the file path.
-   * @param {(value?: (value?: void | PromiseLike<void>) => void} [resolve] - optional custom resolve function for async writing.
-   * @param {(reason?: any) => void} [reject] - optional custom reject function for async writing.
-   * @returns {void | Promise<void>} - returns a Promise on async call, otherwise it returns void.
-   * @throws {Error} if input doesn't meet the accepted scope or if the writing process was aborted.
-   */
-  public writeTo(filePath: string, resolve?: (value?: void | PromiseLike<void>) => void, reject?: (reason?: any) => void): void | Promise<void> {
-    if (!DatasetValidator.isValidPath(filePath)) { throw Error('writeTo: Please provide a valid path.'); }
-    this.parseFilePath(filePath);
-    this.createNonexistingDirectories();
+  private createWriter(): Writer {
     if (this._options.sync) {
-      try { this.writeSync(); }
-      catch (err) { this.catchError(err); }
-    } else { return this.writeAsync(resolve, reject); }
-  }
-
-  private parseFilePath(filePath: string): void {
-    filePath = PathSetter.specifyPathDelimiterForOS(filePath);
-    filePath = path.normalize(filePath);
-    this._parsedPath = path.parse(filePath);
-  }
-
-  private static specifyPathDelimiterForOS(filePath: string): string {
-    if (/(Windows)/.test(os.type())) { return filePath.replace(/\//g, '\\'); }
-    else { return filePath.replace(/\\/g, path.sep); }
-  }
-
-  private catchError(err: any): void {
-    if (/ENOENT/.test(err)) { throw new Error('writeTo: No such file or directory. (ENOENT)'); }
-    else if (/EACCES/.test(err)) { throw new Error('writeTo: Permission denied. (EACCES)'); }
-    else if (/ECANCELED/.test(err)) { throw new Error('writeTo: Operation canceled. (ECANCELED)'); }
-    else { throw err; }
-  }
-
-  private writeSync(): void {
-    const filePath = this.createFilePathString();
-    const data = this.convertData();
-    fs.writeFileSync(filePath, data, this._options.fileSystem);
-  }
-
-  private writeAsync(resolve: (value?: void | PromiseLike<void>) => void, reject: (reason?: any) => void): Promise<void> {
-    const filePath = this.createFilePathString();
-    const data = this.convertData();
-    const self = this;
-    const writeFile = promisify(fs.writeFile);
-    return writeFile(filePath, data, this._options.fileSystem)
-      .then((value) => {
-        resolve(value);
-      })
-      .catch((err) => {
-        if (reject) {
-          try {
-            self.catchError(err);
-          } catch (err) {
-            reject(err);
-          }
-        } else {
-          self.catchError(err);
-        }
-      });
-  }
-
-  private createFilePathString(): string {
-    if (this._parsedPath.dir === '') { return '.' + path.sep + this._parsedPath.base; }
-    else { return this._parsedPath.dir + path.sep + this._parsedPath.base; }
-  }
-
-  private convertData(): string {
-    if (this._parsedPath.ext === '.csv') { return this.convertToXSV(','); }
-    else if (this._parsedPath.ext === '.tsv') { return this.convertToXSV('\t'); }
-    else if (this._parsedPath.ext === '.txt') { return this.convertToTXT(); }
-    else {
-      return JSON.stringify({ 'header': this._dataset.header, 'data': this._dataset.data }, (key, value) => {
-        if (Number.isNaN(value)) { return 'NaN'; }
-        return value;
-      });
+      return new SyncWriter(this._options, this._dataset, this._errors);
+    } else {
+      return new AsyncWriter(this._options, this._dataset, this._errors);
     }
   }
-
-  private convertToXSV(delimiter: string = ','): string {
-    let outputString = this._dataset.header.join(delimiter) + '\n';
-    this._dataset.data.forEach((row: Array<number | string | boolean>) => {
-      outputString += row.map(this.stringValueDelimitation).join(delimiter) + '\n';
-    });
-    return outputString;
-  }
-
-  private stringValueDelimitation(value): string {
-    if (typeof value === 'string' || value instanceof String) {
-      if (value instanceof String) { value = value.toString(); }
-      if (value === '') { return ('""'); } // empty string
-      if (/\s/g.test(value)) { return ('"' + value + '"'); } // string contains spaces
-      if (/^"(.*(?="$))"$/.test(value) || /^'(.*(?='$))'$/.test(value)) { return ('"' + value + '"'); } // string is delimited with quotes
-      if (/^[+-]?(?=\d+)(?:\d+,)*\d*(?:\.\d+)?$/.test(value)) { return ('"' + value + '"'); } // string has number format
-    }
-    return value;
-  }
-
-  private convertToTXT(): string {
-    return this.convertToXSV(',');
-  }
-
-  private createNonexistingDirectories(): void {
-    this._parsedPath.dir.split(path.sep).reduce((dir: string, segment: string) => {
-      this.createNonExistingDirectory(dir);
-      dir = dir + path.sep + segment;
-      this.createNonExistingDirectory(dir);
-      return dir;
-    });
-  }
-
-  private createNonExistingDirectory(dir: string): void {
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
-    }
-  }
-
 }
