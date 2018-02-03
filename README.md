@@ -184,8 +184,8 @@ Also have a look at the **Code Examples** for:
 
 ### Error-handling
 
-* **sync-mode**: Each method is able to throw an `Error`. The `Error`-object contains a hint regarding the occured problem.
-* **async-mode**: Each `Error` is populated into the `reject`-callback. If no `reject`-callback given, the `Error` is thrown and can be catched with the `catch`-facility of the resulting Promise. The `Error` contains a hint regarding the occured problem.
+* **sync-mode**: Each method is able to throw an `Error`. The triggered `Error`-object contains a hint regarding the occured problem.
+* **async-mode**: Each occuring `Error` is populated into the `reject`-callback and the progress of writing is thus cancelled. If no `reject`-callback given, the `Error` is thrown and can be catched with the `catch`-facility of the resulting Promise. The triggered `Error` contains a hint regarding the occured problem.
 
 ## Scope Definition
 
@@ -210,7 +210,13 @@ This project is configured to run automated tests via *Travis CI* (for Linux and
 
 Everybody is more than welcome to contribute and extend the functionality!
 
-Please feel free to contribute to this project as much as you wish to. Before triggering a pull-request, please make sure that you've run all the tests via the *testing command*:
+Please feel free to contribute to this project as much as you wish to.
+
+1. clone from GitHub via `git clone https://github.com/mvrahden/treasurer.git`
+2. `cd` into the directory and `npm install` for initialization
+3. Try to `npm run test`. If everything is green, you're ready to go :sunglasses:
+
+Before triggering a pull-request, please make sure that you've run all the tests via the *testing command*:
 
 ```
 npm run test
