@@ -1,19 +1,19 @@
 # Treasurer
 [![Build Status](https://travis-ci.org/mvrahden/treasurer.svg?branch=master)](https://travis-ci.org/mvrahden/treasurer) [![Build status](https://ci.appveyor.com/api/projects/status/1gbi2lkll4d48cy6/branch/master?svg=true)](https://ci.appveyor.com/project/mvrahden/treasurer/branch/master) [![dependency-free](https://img.shields.io/badge/dependencies-none-brightgreen.svg)]() [![js-google-style](https://img.shields.io/badge/code%20style-google-blue.svg)](https://google.github.io/styleguide/jsguide.html)
 
-> A lightweight tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.tsv.
-
-* [API-Description](#api-description)
-  * [Reader](#read)
-  * [Writer](#write)
-* Code-Examples
-  * [How to write data sets?](#how-to-write) + More Examples: [Sync][sync-write] / [Async][async-write]
-  * [How to read data sets?](#how-to-read) + More Examples: [Sync][sync-read] / [Async][async-read]
-
 [sync-write]: examples/synced-writing.md
 [async-write]: examples/async-writing.md
 [sync-read]: examples/synced-reading.md
 [async-read]: examples/async-reading.md
+
+> A lightweight tool to read and write 2-dimensional data to common file formats, e.g. *.json, *.csv or *.tsv.
+
+* [API-Description](#api-description)
+  * [Writer](#write)
+  * [Reader](#read)
+* Code-Examples
+  * [How to write data sets?](#how-to-write) + More Examples: [Sync][sync-write] / [Async][async-write]
+  * [How to read data sets?](#how-to-read) + More Examples: [Sync][sync-read] / [Async][async-read]
 
 ## For Production Use
 
@@ -51,8 +51,7 @@ For JavaScript usage `require` classes from this `npm` module as follows:
 let Treasurer = require('treasurer').Treasurer;
 ```
 
-
-**Write data** <a name="how-to-write"></a> synchronously given to any file:<br>
+**Write data** <a name="how-to-write"></a> synchronously to any given file path:<br>
 (For async writing please check the [code example][async-write].)
 
 ```typescript
@@ -108,36 +107,12 @@ console.log(dataset.data);
 
 ## API-Description
 
-### Read
-
-In the following section is the API description for the reading facility. Have a look at the Code Examples for [async reading][async-read] and [sync reading][sync-read].
-
-#### `fileReader(options?: ReaderConfig): Function`
-* Entry point and configuration-injection for the file-reader facility.
-* `options?`: optional reader configuration. Structure as follows:
-  * `sync?: boolean` - synchronous reading. [Default: `false`]
-  * `fileSystem?: object|string|null` - set Filesystem related options
-    * `encoding?: string|null` - Default: `'utf8'` (differing from NodeJS Default)
-    * `flag?: string` - Default: `'r'`
-* returns `readFrom: Function`
-
-#### `readFrom(path: string, resolve?: (value?: DataSet | PromiseLike<DataSet>) => void, reject?: (reason?: any) => void): DataSet | Promise<DataSet>`
-* Accepts an **OS-independent** path value and reads the content from that file. 
-* `path`: String containing the path to the file; independent of the Operating System; e.g.:
-  * relative Posix Path: `path/to/file.json` or `./path/to/file.json`
-  * absolute Posix Path: `/path/to/file.csv`
-  * relative Windows Path: `path\to\file.json` or `.\path\to\file.json`
-  * absolute Windows Server-Path: `C:\path\to\file.csv` or `\\path\to\file.csv` (mind: escaping characters!)
-* `resolve?`: optional custom `resolve` function for ASYNC reading tasks
-* `reject?`: optional custom `reject` function for ASYNC reading tasks
-* returns `DataSet` in synchronous call and a `Promise<DataSet>` in async function calls. `DataSet` containing the following structure:
-  * `header: Array<string|number>` - 1D-Array of mixed values.
-  * `data: Array<Array<string|number|boolean>>` - 2D-Array of corresponding data mixed values.
-* throws an `Error` if input doesn't meet the expected scope.
-
 ### Write
 
-In the following section is the API description for the writing facility. Have a look at the Code Examples for [async writing][async-write] and [sync writing][sync-write].
+In the following section is the API description for the writing facility.<br>
+Also have a look at the **Code Examples** for:
+* [async writing][async-write] and
+* [sync writing][sync-write].
 
 #### `fileWriter(options?: WriterConfig): Function`
 * Entry point and configuration-injection for the file-writer facility.
@@ -177,9 +152,40 @@ In the following section is the API description for the writing facility. Have a
   * input doesn't meet the expected scope or
   * if the writing process was aborted.
 
+### Read
+
+In the following section is the API description for the reading facility.<br>
+Also have a look at the **Code Examples** for:
+* [async reading][async-read] and
+* [sync reading][sync-read].
+
+#### `fileReader(options?: ReaderConfig): Function`
+* Entry point and configuration-injection for the file-reader facility.
+* `options?`: optional reader configuration. Structure as follows:
+  * `sync?: boolean` - synchronous reading. [Default: `false`]
+  * `fileSystem?: object|string|null` - set Filesystem related options
+    * `encoding?: string|null` - Default: `'utf8'` (differing from NodeJS Default)
+    * `flag?: string` - Default: `'r'`
+* returns `readFrom: Function`
+
+#### `readFrom(path: string, resolve?: (value?: DataSet | PromiseLike<DataSet>) => void, reject?: (reason?: any) => void): DataSet | Promise<DataSet>`
+* Accepts an **OS-independent** path value and reads the content from that file. 
+* `path`: String containing the path to the file; independent of the Operating System; e.g.:
+  * relative Posix Path: `path/to/file.json` or `./path/to/file.json`
+  * absolute Posix Path: `/path/to/file.csv`
+  * relative Windows Path: `path\to\file.json` or `.\path\to\file.json`
+  * absolute Windows Server-Path: `C:\path\to\file.csv` or `\\path\to\file.csv` (mind: escaping characters!)
+* `resolve?`: optional custom `resolve` function for ASYNC reading tasks
+* `reject?`: optional custom `reject` function for ASYNC reading tasks
+* returns `DataSet` in synchronous call and a `Promise<DataSet>` in async function calls. `DataSet` containing the following structure:
+  * `header: Array<string|number>` - 1D-Array of mixed values.
+  * `data: Array<Array<string|number|boolean>>` - 2D-Array of corresponding data mixed values.
+* throws an `Error` if input doesn't meet the expected scope.
+
 ### Error-handling
 
-Each method is able to throw an `Error` containing a hint in case of false usage.
+* **sync-mode**: Each method is able to throw an `Error`. The `Error`-object contains a hint regarding the occured problem.
+* **async-mode**: Each `Error` is populated into the `reject`-callback. If no `reject`-callback given, the `Error` is thrown and can be catched with the `catch`-facility of the resulting Promise. The `Error` contains a hint regarding the occured problem.
 
 ## Scope Definition
 
