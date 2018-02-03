@@ -218,7 +218,7 @@ npm run test
 
 ## Code of Conduct
 
-When you're contributing, try to...
+When you're coding, try to...
 
 - make things clear to everyone.
 - encapsulate complex things in methods with expressive names.
