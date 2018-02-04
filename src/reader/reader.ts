@@ -2,7 +2,7 @@ import * as os from 'os';
 import * as path from 'path';
 import { ParsedPath } from 'path';
 
-import { DataSet, ReaderConfig, DatasetValidator } from "../utilities";
+import { DataSet, ReaderConfig, DatasetValidator } from '../utilities';
 
 export abstract class Reader {
   protected _options: ReaderConfig;
