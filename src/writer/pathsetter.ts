@@ -5,16 +5,14 @@ import { ParsedPath } from 'path';
 
 import { WriterConfig, DataSet, DatasetValidator } from '../utilities';
 
-export abstract class Writer {
+export abstract class PathSetter {
   protected _options: WriterConfig;
   protected _parsedPath: ParsedPath = null;
   protected _dataset: DataSet;
-  protected _errors: Error[];
 
-  constructor(options: WriterConfig, content: DataSet, errors: Error[]) {
+  constructor(options: WriterConfig, content: DataSet) {
     this._options = options;
     this._dataset = content;
-    this._errors = errors;
   }
 
   /**
@@ -38,7 +36,7 @@ export abstract class Writer {
   protected abstract specificWrite(resolve?: (value?: void | PromiseLike<void>) => void, reject?: (reason?: any) => void): void | Promise<void>;
 
   protected parseFilePath(filePath: string): void {
-    filePath = Writer.specifyPathDelimiterForOS(filePath);
+    filePath = PathSetter.specifyPathDelimiterForOS(filePath);
     filePath = path.normalize(filePath);
     this._parsedPath = path.parse(filePath);
   }
@@ -50,22 +48,20 @@ export abstract class Writer {
 
   protected catchError(err: any): void {
     if (/ENOENT/.test(err)) {
-      this.logError('writeTo: No such file or directory. (ENOENT)');
+      this.handleError('writeTo: No such file or directory. (ENOENT)');
     }
     else if (/EACCES/.test(err)) {
-      this.logError('writeTo: Permission denied. (EACCES)');
+      this.handleError('writeTo: Permission denied. (EACCES)');
     }
     else if (/ECANCELED/.test(err)) {
-      this.logError('writeTo: Operation canceled. (ECANCELED)');
+      this.handleError('writeTo: Operation canceled. (ECANCELED)');
     }
     else {
-      this.logError(err.toString());
+      this.handleError(err.toString());
     }
   }
 
-  protected logError(err: string): void {
-    this._errors.push(new Error(err));
-  }
+  protected abstract handleError(err: string): void;
 
   protected static isFunction(func: any): boolean {
     return func && typeof func === 'function';

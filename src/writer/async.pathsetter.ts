@@ -2,20 +2,26 @@ import * as fs from 'fs';
 import { promisify } from '../polyfills/promisify';
 const writeFile = promisify(fs.writeFile);
 
-import { Writer } from './writer';
+import { PathSetter } from './pathsetter';
 import { WriterConfig, DataSet } from '../utilities';
 
-export class AsyncWriter extends Writer {
+export class AsyncPathSetter extends PathSetter {
+  protected _errors: Error[];
   
   constructor(options: WriterConfig, content: DataSet, errors: Error[]) {
-    super(options, content, errors);
+    super(options, content);
+    this._errors = errors;
+  }
+
+  protected handleError(err: string): void {
+    this._errors.push(new Error(err));
   }
 
   protected specificWrite(resolve?: (value?: void | PromiseLike<void>) => void, reject?: (reason?: any) => void): void | Promise<void> {
     if (this._errors.length > 0) {
       const self = this;
       return new Promise(() => { throw this._errors[0]; }).catch((err) => {
-        if (Writer.isFunction(reject)) { reject(err); }
+        if (PathSetter.isFunction(reject)) { reject(err); }
       }) as Promise<void>;
     }
     return this.writeAsync(resolve, reject);
@@ -27,10 +33,10 @@ export class AsyncWriter extends Writer {
     const self = this;
     const promise = writeFile(filePath, data, this._options.fileSystem)
       .then((value) => {
-        if (Writer.isFunction(resolve)) { resolve(value); }
+        if (PathSetter.isFunction(resolve)) { resolve(value); }
       })
       .catch((err) => {
-        if (Writer.isFunction(reject)) {
+        if (PathSetter.isFunction(reject)) {
           try { self.catchError(err); } catch (err) {
             reject(err);
           }
