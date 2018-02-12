@@ -1,6 +1,21 @@
 platform:
   - x86
   - x64
+branches:
+  only:
+  - master
+  - develop
+skip_commits:
+  files:
+    - docs/*
+    - examples/*
+    - .gitignore
+    - .npmignore
+    - .travis.yml
+    - LICENSE
+    - README.md
+    - TODO.md
+    - tslint*
 # Install scripts. (runs after repo cloning)
 install:
   # Get the latest stable version of Node 0.STABLE.latest
@@ -31,14 +46,3 @@ environment:
     - nodejs_version: "7.5.0"   # same results as 7.1.x, 7.2.x, 7.3.x, 7.4.x
     - nodejs_version: "6.12.3"  # same results as 6.5.x, 6.6.x, 6.7.x, 6.8.x, 6.9.x, 6.10.x, 6.11.x, 6.12.x
     - nodejs_version: "6.4.0"   # same results as 6.0.x, 6.1.x, 6.2.x, 6.3.x
-skip_commits:
-  files:
-    - docs/*
-    - examples/*
-    - .gitignore
-    - .npmignore
-    - .travis.yml
-    - LICENSE
-    - README.md
-    - TODO.md
-    - tslint*
