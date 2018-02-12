@@ -10,13 +10,11 @@
   "readme": "README.md",
   "scripts": {
     "prepare": "npm run test",
-    "test": "./node_modules/.bin/jasmine",
-    "pretest": "npm run build:test",
-    "build:test": "tsc -p ./tsconfig.spec.json",
-    "prebuild:test": "npm run build",
-    "build": "tsc -p .",
-    "prebuild": "rimraf dist & rimraf spec/dist",
-    "posttest": "rimraf spec/dist"
+    "test": "./node_modules/.bin/jasmine --config='./jasmine.json'",
+    "pretest": "npm run build",
+    "build": "./node_modules/.bin/tsc -p .",
+    "prebuild": "./node_modules/.bin/rimraf dist",
+    "posttest": "./node_modules/.bin/rimraf dist/*.spec.* dist/*.doubles.*"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -55,10 +53,8 @@
   "homepage": "https://github.com/mvrahden/treasurer#readme",
   "devDependencies": {
     "@types/jasmine": "^2.8.6",
-    "@types/lodash": "^4.14.100",
     "@types/node": "^9.4.0",
     "jasmine": "^2.9.0",
-    "lodash": "^4.17.4",
     "rimraf": "^2.6.2",
     "typescript": "^2.7.1"
   },
