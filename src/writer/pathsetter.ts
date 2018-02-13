@@ -28,7 +28,11 @@ export abstract class PathSetter {
       this.catchError('writeTo: Please provide a valid path.');
     } else {
       this.parseFilePath(filePath);
-      this.createNonexistingDirectories();
+      try {
+        this.createNonexistingDirectories();
+      } catch(err) {
+        this.catchError(err);
+      }
     }
     this.specificWrite(resolve, reject);
   }
@@ -120,6 +124,7 @@ export abstract class PathSetter {
   }
 
   protected createNonExistingDirectory(dir: string): void {
+    if(dir === '') { return; }
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
