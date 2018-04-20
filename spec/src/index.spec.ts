@@ -41,7 +41,7 @@ describe('Treasurer [synchronously]:', () => {
       cleanTestDirectory();
     });
 
-    it('should synchronously create the file even in deeply nested, non-existing directories.', () => {
+    it('should create the file even in deeply nested, non-existing directories.', () => {
       Valid.fileContents.forEach((content: DataSet) => {
         Valid.paths.forEach((path: string) => {
           expect(() => {
@@ -84,7 +84,7 @@ describe('Treasurer [synchronously]:', () => {
       });
     });
 
-    it('should be able to synchronously reconstruct the (cleaned) data that was written by reading the files, e.g. Numbers formatted as Strings.', () => {
+    it('should be able to reconstruct the (cleaned) data that was written by reading the files, e.g. Numbers formatted as Strings.', () => {
       Valid.fileContents.forEach((content: DataSet) => {
         Valid.paths.forEach((path: string) => {
           writeDataSync(content, path);
