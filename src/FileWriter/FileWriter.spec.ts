@@ -16,11 +16,11 @@ describe('FileWriter :', () => {
 
     const makeFileCreator = (fileSystem: FileSystem): FileWriter => {
         return new FileWriter(fileSystem);
-    }
+    };
 
     const makeFileSystemSpy = (): FileSystemSpy => {
         return new FileSystemSpy();
-    }
+    };
 
     describe('File creation:', () => {
         beforeEach(() => {
@@ -56,7 +56,7 @@ describe('FileWriter :', () => {
             const errorMessage = "FileSystem should have created file at path \"" + expected.toString() + "\". Instead it has created at path \"" + actual.toString() + "\"!";
 
             expect(actual).toEqual(expected, errorMessage);
-        }
+        };
 
         const expectFileSystemHasCreatedFileWithContent = (expectedContent: string): void => {
             const actual = fileSystem.getFileContent();
@@ -64,7 +64,7 @@ describe('FileWriter :', () => {
             const errorMessage = "FileSystem should have created file with content \"" + expected + "\". Instead the file has the content \"" + actual + "\"!";
 
             expect(actual).toBe(expected, errorMessage);
-        }
+        };
 
         const expectFileSystemHasCreatedFileWithOptions = (expectedOptions: FileOptions): void => {
             const actual = fileSystem.getFileOptions();
@@ -72,7 +72,7 @@ describe('FileWriter :', () => {
             const errorMessage = "FileSystem has not received the correct FileOptions!";
 
             expect(actual).toBe(expected, errorMessage);
-        }
+        };
     });
 
     describe('absolute posix path creation:', () => {
@@ -146,13 +146,13 @@ describe('FileWriter :', () => {
         const errorMessage = "FileSystem should have created directories \"" + expected + "\", but it has created \"" + actual + "\"!";
 
         expect(actual).toBe(expected, errorMessage);
-    }
+    };
 
     const expectParentDirectoriesLogToBe = (directory: string): void => {
         const actual = fileSystem.getParentDirectoriesLog();
         const expected = directory;
-        const errorMessage = "FileSystem should have created in parent directories \"" + expected + "\", but it has created in \"" + actual + "\"!"
+        const errorMessage = "FileSystem should have created in parent directories \"" + expected + "\", but it has created in \"" + actual + "\"!";
 
         expect(actual).toBe(expected, errorMessage);
-    }
+    };
 });
