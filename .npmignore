@@ -1,18 +1,16 @@
-# Tests and Test data
-spec
-spec.dist
-
-# Source Files
+# Directories
+node_modules
+examples
+docs
 src
 
-# Dependencies
-node_modules
+# Config Files
+.appveyor.yml
+.travis.yml
+jasmine.json
+tsconfig.json
+tslint-google.json
+tslint.json
 
 # Other Files
 TODO.md
-examples
-
-# Config Files
-.travis.yml
-tslint-google.json
-tslint.json
