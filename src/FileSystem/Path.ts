@@ -20,7 +20,7 @@ export class Path {
 
     public parent(): Path {
         const search = this._delimiter + this.last();
-        let parent = this._path.replace(search, '');
+        const parent = this._path.replace(search, '');
 
         return new Path(this.untag(parent));
     }

@@ -6,24 +6,26 @@ export class ExtensionValidator {
     }
 
     public isValid(path: string): boolean {
-        let actualExtension: string = this.findExtension(path);
+        const actualExtension: string = this.findExtension(path);
 
         return this.isMatching(actualExtension);
     }
 
     private isMatching(actualExtension: string) {
-        for (let extension of this._matchingExtensions)
-            if (actualExtension === extension)
+        for (const extension of this._matchingExtensions) {
+            if (actualExtension === extension) {
                 return true;
-
+            }
+        }
         return false;
     }
 
     private findExtension(path: string): string {
-        for (let i = path.length - 1; i >= 0; i--)
-            if (path.charAt(i) === '.')
+        for (let i = path.length - 1; i >= 0; i--) {
+            if (path.charAt(i) === '.') {
                 return path.substr(i);
-
+            }
+        }
         return "";
     }
 }

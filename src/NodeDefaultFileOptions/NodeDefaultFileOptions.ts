@@ -1,4 +1,4 @@
-import { FileOptions } from "../FileSystem/FileOptions";
+import { FileOptions } from '../FileSystem/FileOptions';
 
 export class NodeDefaultFileOptions implements FileOptions {
     public encoding: string = 'utf8';
